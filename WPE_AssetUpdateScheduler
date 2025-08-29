@@ -1,0 +1,36 @@
+public class WPE_AssetUpdateScheduler implements Schedulable {
+    private Id orderId;
+    private WPE_OrderActivationService.PayloadWrapper payload;
+
+    public WPE_AssetUpdateScheduler(Id orderId, WPE_OrderActivationService.PayloadWrapper payload) {
+        this.orderId = orderId;
+        this.payload = payload;
+    }
+
+    public void execute(SchedulableContext sc) {
+        System.enqueueJob(new WPE_AssetUpdateJob(orderId, payload));
+    }
+
+    // Helper to schedule 2 mins later
+    public static void scheduleJob(Id orderId, WPE_OrderActivationService.PayloadWrapper payload) {
+        String jobName = 'WPE_AssetUpdateScheduler_' + Datetime.now().getTime();
+        Datetime runTime = Datetime.now().addMinutes(2);
+        String cron = getCronForDatetime(runTime);
+
+        System.schedule(jobName, cron, new WPE_AssetUpdateScheduler(orderId, payload));
+    }
+
+    private static String getCronForDatetime(Datetime dt) {
+        return String.format(
+            '{0} {1} {2} {3} {4} ? {5}',
+            new String[]{
+                String.valueOf(dt.second()),
+                String.valueOf(dt.minute()),
+                String.valueOf(dt.hour()),
+                String.valueOf(dt.day()),
+                String.valueOf(dt.month()),
+                String.valueOf(dt.year())
+            }
+        );
+    }
+}
