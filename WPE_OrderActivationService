@@ -1,0 +1,250 @@
+@RestResource(urlMapping='/order/activate')
+global with sharing class WPE_OrderActivationService {
+    
+    @HttpPost
+    global static List<ResponseWrapper> updateAssets() {
+        RestRequest req = RestContext.request;
+        RestResponse res = RestContext.response;
+        List<ResponseWrapper> responseList = new List<ResponseWrapper>();
+        
+        try {
+            // Deserialize payload
+            PayloadWrapper payload = (PayloadWrapper) JSON.deserialize(req.requestBody.toString(), PayloadWrapper.class);
+            system.debug(JSON.serializePretty(req.requestBody.toString()));
+            // Validate operation type
+            if (String.isBlank(payload.operationType)) {
+                res.statusCode = 400;
+                responseList.add(new ResponseWrapper('ERROR', 'Missing required field: operationType', '400'));
+                return responseList;
+            }
+            
+            // Process based on operation type
+            if (payload.operationType == 'OrderActivation') {
+                // Query the order
+                Order ord = [
+                    SELECT Id, Status, EffectiveDate, Opportunity.Sales_Type__c,QuoteId
+                    FROM Order 
+                    WHERE Id = :payload.subscriptionDetails.order 
+                    LIMIT 1
+                ];
+                
+                // Activate order
+               if (ord.Status != 'Activated') {
+                    ord.Status = 'Activated';
+                    if (ord.EffectiveDate == null) {
+                        ord.EffectiveDate = System.today();
+                    }
+                    update ord;
+                }
+                // Schedule the job to run 2 minutes later
+WPE_AssetUpdateScheduler.scheduleJob(ord.Id, payload);
+               /* if(ord.Opportunity.Sales_Type__c=='New Sign Up'){
+                // Collect Asset updates
+
+// Query assets linked to the order
+List<AssetActionSource> sources = [
+    SELECT Id, ReferenceEntityItemId, AssetAction.AssetId
+    FROM AssetActionSource
+    WHERE ReferenceEntityItemId IN (
+        SELECT Id FROM OrderItem WHERE OrderId = :ord.Id
+    )
+];
+system.debug(sources);
+Set<Id> assetIds = new Set<Id>();
+for (AssetActionSource s : sources) {
+    if (s.AssetAction.AssetId != null) {
+        assetIds.add(s.AssetAction.AssetId);
+    }
+}
+List<Asset> assetsToUpdate = new List<Asset>();
+// Query existing assets
+Map<Id, Asset> existingAssets = new Map<Id, Asset>(
+    [SELECT Id,Name FROM Asset WHERE Id IN :assetIds]
+);
+
+// Loop through subscription lines
+for (WPE_OrderActivationService.SubscriptionLine line : payload.subscriptionDetails.subscriptionLines) {
+    
+    // For demo: just use the first asset found (in real-world you should match asset by product, line type, etc.)
+    for (Asset a : existingAssets.values()) {
+      if(line.itemcatalogType=='Product' && a.Name==payload.subscriptionDetails.subscriptionName){
+        // --- Subscription-level mappings ---
+        //a.Name = payload.subscriptionDetails.subscriptionName;No need asset will already have this field
+        a.WPE_Status__c = payload.subscriptionDetails.billingSubscriptionStatus;
+        //a.LifecycleStartDate = (payload.subscriptionDetails.startDate != null ? DateTime.valueOf(payload.subscriptionDetails.startDate) : null);
+        //a.LifecycleEndDate = (payload.subscriptionDetails.endDate != null ? DateTime.valueOf(payload.subscriptionDetails.endDate) : null);
+        a.Billing_Frequency__c = payload.frequency.name; 
+       // a.CurrencyIsoCode = payload.currencyInfo.name;
+        a.WPE_Next_Renewal_Start_Date__c = payload.subscriptionDetails.nextRenewalStartDate != '' ? Date.valueOf(payload.subscriptionDetails.nextRenewalStartDate) : null;
+        a.WPE_NetSuite_Id__c = payload.subscriptionDetails.netsuiteSubscriptionId;
+        a.WPE_NetSuite_Salesorder_Id__c = payload.subscriptionDetails.netsuiteSalesorderId;
+        a.WPE_Order__c = payload.subscriptionDetails.order;
+        a.WPE_Opportunity__c = payload.subscriptionDetails.opportunity;
+      //  a.CurrentMrr = (payload.subscriptionDetails.mrr != null ? Decimal.valueOf(payload.subscriptionDetails.mrr) : null);
+     //   a.WPE_Source__c = payload.subscriptionDetails.source;
+        a.DoesAutomaticallyRenew = (payload.subscriptionDetails.autorenewal != null ? Boolean.valueOf(payload.subscriptionDetails.autorenewal) : null);
+        a.WPE_Order_Channel__c = payload.subscriptionDetails.wpeOrderChannel;
+      //  a.Sales_Type__c = payload.subscriptionDetails.salesType;
+        
+        // --- Subscription Line-level mappings --- 
+        a.WPE_Line_Type__c = line.subscriptionLineType;
+        a.WPE_Billing_Mode__c = line.billingMode;
+        //a.WPE_Subscription_Line__c = line.productName; // item.name
+        a.WPE_Discount__c = (line.discount != null ? line.discount : null);
+        a.Quantity = (line.quantity != null ? Integer.valueOf(line.quantity) : null);
+        a.WPE_Status2__c = line.status;
+        a.WPE_Prorate_Start_Date__c = (line.prorateStartDate != null ? Boolean.valueOf(line.prorateStartDate) : false);
+        a.WPE_Prorate_End_Date__c = (line.prorateEndDate != null ? Boolean.valueOf(line.prorateEndDate) : false);
+        a.WPE_Required__c = line.isIncluded;
+        a.Charge_Frequency__c = line.chargeFrequency;
+        
+        // Corrected mappings
+        a.WPE_NetSuite_PricePlanId__c = line.netsuitePricePlanId;  // FIXED
+        a.WPE_Repeat_Every__c = line.repeatEvery;                   // FIXED
+      //  a.CurrentMrr = (line.recurringAmount != null ? Decimal.valueOf(line.recurringAmount) : null); // FIXED
+    assetsToUpdate.add(a);
+    }
+}
+    
+}
+    
+
+if (!assetsToUpdate.isEmpty()) {
+    update assetsToUpdate;
+}  
+                }*/
+                // TODO: Call your activation logic
+                // MyOrderHandler.activate(payload);
+            } 
+            else if (payload.operationType == 'OrderProvisioningUpdate') {
+                // TODO: Call your provisioning logic
+                // MyOrderHandler.provisionUpdate(payload);
+            } else {
+                res.statusCode = 400;
+                responseList.add(new ResponseWrapper('ERROR', 'Invalid operationType: ' + payload.operationType, '400'));
+                return responseList;
+            }
+            
+            // Success
+            res.statusCode = 200;
+            responseList.add(new ResponseWrapper('SUCCESS', 'Processed successfully for operationType: ' + payload.operationType, ''));
+            return responseList;
+            
+        } catch (Exception e) {
+            res.statusCode = 500;
+            responseList.add(new ResponseWrapper('ERROR', 'Error processing request: ' + e.getMessage(), '500'));
+            return responseList;
+        }
+    }
+    
+    // --------- RESPONSE WRAPPER ----------
+    global class ResponseWrapper {
+        public String status;
+        public String message;
+        public String errorCode;
+        public ResponseWrapper(String status, String message, String errorCode) {
+            this.status = status;
+            this.message = message;
+            this.errorCode = errorCode;
+        }
+    }
+    
+    // --------- PAYLOAD WRAPPER ----------
+    global class PayloadWrapper {
+        public String operationType;
+        public CustomerRecord customerRecord;
+        public BillingAccount billingAccount;
+        public CurrencyInfo currencyInfo;
+        public Frequency frequency;
+        public BillingSchedule billingSchedule;
+        public SubscriptionDetails subscriptionDetails;
+    }
+    
+    global class CustomerRecord {
+        public String internalId;
+        public String name;
+        public String recordType;
+        public String companyName;
+        public String url;
+        public String billingAddress1;
+        public String billingCity;
+        public String billingState;
+        public String billingCountry;
+        public String billingZip;
+        public String shippingAddress1;
+        public String shippingCity;
+        public String shippingState;
+        public String shippingCountry;
+        public String shippingZip;
+        public String comments;
+        public String phone;
+        public String billingCountryCode;
+        public String celigoSalesforceId;
+        public String salesforceId;
+        public Boolean isIndividual;
+        public String dataURI;
+    }
+    
+    global class BillingAccount {
+        public String internalId;
+        public String name;
+    }
+    
+    global class CurrencyInfo {
+        public String internalId;
+        public String name;
+    }
+    
+    global class Frequency {
+        public String internalId;
+        public String name;
+    }
+    
+    global class BillingSchedule {
+        public String internalId;
+        public String name;
+    }
+    
+    global class SubscriptionDetails {
+        public String subscriptionName;
+        public String billingSubscriptionStatus;
+        public String startDate;
+        public String endDate;
+        public String billingFrequency;
+        public String currencyCode;
+        public String nextRenewalStartDate;
+        public String netsuiteSubscriptionId;
+        public String netsuiteSalesorderId;
+        public String order;
+        public String opportunity;
+        public String mrr;
+        public String source;
+        public String autorenewal;
+        public String wpeOrderChannel;
+        public String salesType;
+        public List<SubscriptionLine> subscriptionLines;
+    }
+    
+    global class SubscriptionLine {
+        public String celigoNSsubscriptionLineId;
+        public String itemcatalogType;
+        public String parentSFSubscriptionID;
+        public String wpeHostingId;
+        public String subscriptionLineType;
+        public String billingMode;
+        public String productName;
+        public String discount;
+        public String quantity;
+        public String startDate;
+        public String endDate;
+        public String status;
+        public Boolean prorateStartDate;
+        public Boolean prorateEndDate;
+        public Boolean includeInRenewal;
+        public Boolean isIncluded;
+        public String chargeFrequency;
+        public String netsuitePricePlanId;
+        public String repeatEvery;
+        public String recurringAmount;
+    }
+}
