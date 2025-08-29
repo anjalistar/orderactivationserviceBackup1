@@ -1,0 +1,64 @@
+public class WPE_AssetUpdateJob implements Queueable, Database.AllowsCallouts {
+
+    private Id orderId;
+    private WPE_OrderActivationService.PayloadWrapper payload;
+
+    public WPE_AssetUpdateJob(Id orderId, WPE_OrderActivationService.PayloadWrapper payload) {
+        this.orderId = orderId;
+        this.payload = payload;
+    }
+
+    public void execute(QueueableContext context) {
+        // 1. Query asset sources after assetization is complete
+        List<AssetActionSource> sources = [
+            SELECT Id, ReferenceEntityItemId, AssetAction.AssetId
+            FROM AssetActionSource
+            WHERE ReferenceEntityItemId IN (
+                SELECT Id FROM OrderItem WHERE OrderId = :orderId
+            )
+        ];
+
+        Set<Id> assetIds = new Set<Id>();
+        for (AssetActionSource s : sources) {
+            if (s.AssetAction.AssetId != null) {
+                assetIds.add(s.AssetAction.AssetId);
+            }
+        }
+
+        if (assetIds.isEmpty()) {
+            System.debug('No assets created yet for order ' + orderId);
+            return;
+        }
+
+        // 2. Query Assets
+        List<Asset> assetsToUpdate = [
+            SELECT Id, Name
+            FROM Asset
+            WHERE Id IN :assetIds
+        ];
+for (WPE_OrderActivationService.SubscriptionLine line : payload.subscriptionDetails.subscriptionLines) {
+
+        // 3. Apply mapping
+        for (Asset a : assetsToUpdate) {
+            // Example mappings (reuse your logic)
+            a.WPE_Status__c = payload.subscriptionDetails.billingSubscriptionStatus;
+            a.WPE_NetSuite_Id__c = payload.subscriptionDetails.netsuiteSubscriptionId;
+            a.WPE_NetSuite_Salesorder_Id__c = payload.subscriptionDetails.netsuiteSalesorderId;
+            a.WPE_Order__c = payload.subscriptionDetails.order;
+            a.WPE_Opportunity__c = payload.subscriptionDetails.opportunity;
+
+            // line-level mapping (for demo, apply first line)
+            if (!payload.subscriptionDetails.subscriptionLines.isEmpty()) {
+               // WPE_OrderActivationService.SubscriptionLine line = payload.subscriptionDetails.subscriptionLines[0];
+                a.WPE_Line_Type__c = line.subscriptionLineType;
+                a.WPE_Billing_Mode__c = line.billingMode;
+                a.Quantity = (line.quantity != null ? Integer.valueOf(line.quantity) : null);
+                a.WPE_Status2__c = line.status;
+            }
+        }
+}
+        if (!assetsToUpdate.isEmpty()) {
+            update assetsToUpdate;
+        }
+    }
+}
