@@ -1,0 +1,220 @@
+@RestResource(urlMapping='/order/activate')
+global with sharing class WPE_OrderActivationService {
+    
+    @HttpPost
+    global static List<ResponseWrapper> updateAssets() {
+        RestRequest req = RestContext.request;
+        RestResponse res = RestContext.response;
+        List<ResponseWrapper> responseList = new List<ResponseWrapper>();
+        
+        try {
+            // Deserialize payload
+            PayloadWrapper payload = (PayloadWrapper) JSON.deserialize(req.requestBody.toString(), PayloadWrapper.class);
+            system.debug(JSON.serializePretty(req.requestBody.toString()));
+            // Validate operation type
+            if (String.isBlank(payload.operationType)) {
+                res.statusCode = 400;
+                responseList.add(new ResponseWrapper('ERROR', 'Missing required field: operationType', '400'));
+                return responseList;
+            }
+            
+            // Process based on operation type
+            if (payload.operationType == 'OrderActivation') {
+                // Query the order
+                Order ord = [
+                    SELECT Id, Status, EffectiveDate, Opportunity.Sales_Type__c,QuoteId
+                    FROM Order 
+                    WHERE Id = :payload.subscriptionDetails.order 
+                    LIMIT 1
+                ];
+                
+                // Activate order
+                if (ord.Status != 'Activated') {
+                    ord.Status = 'Activated';
+                    if (ord.EffectiveDate == null) {
+                        ord.EffectiveDate = System.today();
+                    }
+                    update ord;
+                }
+                
+                // Schedule the job to run 2 minutes later
+                WPE_AssetUpdateScheduler.scheduleJob(ord.Id, payload);
+                
+            } 
+            else if (payload.operationType == 'OrderProvisioningUpdate') {
+                // TODO: Call your provisioning logic
+                // MyOrderHandler.provisionUpdate(payload);
+            } else {
+                res.statusCode = 400;
+                responseList.add(new ResponseWrapper('ERROR', 'Invalid operationType: ' + payload.operationType, '400'));
+                return responseList;
+            }
+            
+            // Success
+            res.statusCode = 200;
+            responseList.add(new ResponseWrapper('SUCCESS', 'Processed successfully for operationType: ' + payload.operationType, ''));
+            return responseList;
+            
+        } catch (Exception e) {
+            res.statusCode = 500;
+            responseList.add(new ResponseWrapper('ERROR', 'Error processing request: ' + e.getMessage(), '500'));
+            return responseList;
+        }
+    }
+    @InvocableMethod(label='Create or Update Asset from Order' description='Creates or updates assets based on an Order ID.') 
+    public static List<Result> createAssetsFromOrder(List<Request> requests) {
+        List<Result> results = new List<Result>(); 
+        for (Request req : requests) {
+            try { 
+                // Prepare the input for the invocable action 
+            //    Map<String, Object> inputMap = new Map<String, Object>(); 
+             //   inputMap.put('orderId', req.orderId); 
+             List<Id> inputList = new List<Id>();
+                inputList.add(ord.Id);
+                // Call the standard invocable action 
+                List<Invocable.Action.Result> actionResults = Database.invokeAction('standard/createOrUpdateAssetFromOrder', new List<Id>{inputList});
+                //  // Process the results 
+                if (actionResults != null && !actionResults.isEmpty()) 
+                { Database.InvocableActionResult actionResult = actionResults[0]; 
+                 if (actionResult.isSuccess()) { 
+                     Map<String, Object> outputValues = actionResult.getOutputValues(); 
+                     results.add(new Result(true, (String)outputValues.get('requestId')));
+                 } 
+                 else { 
+                     results.add(new Result(false, 'Error: ' + actionResult.getErrors())); } 
+                } 
+                else { 
+                    results.add(new Result(false, 'No action results returned.')); 
+                } 
+            } 
+            catch (Exception e) { 
+                results.add(new Result(false, 'Exception: ' + e.getMessage())); 
+            } 
+        } 
+        return results; 
+    }
+    public class Request { 
+        @InvocableVariable(required=true) 
+                          public String orderId; 
+    } 
+    public class Result { 
+        @InvocableVariable 
+        public Boolean isSuccess; 
+        @InvocableVariable public String message; 
+        public Result(Boolean success, String msg) 
+        { 
+            this.isSuccess = success; this.message = msg; 
+        } 
+    } 
+
+    // --------- RESPONSE WRAPPER ----------
+    global class ResponseWrapper {
+        public String status;
+        public String message;
+        public String errorCode;
+        public ResponseWrapper(String status, String message, String errorCode) {
+            this.status = status;
+            this.message = message;
+            this.errorCode = errorCode;
+        }
+    }
+    
+    // --------- PAYLOAD WRAPPER ----------
+    global class PayloadWrapper {
+        public String operationType;
+        public CustomerRecord customerRecord;
+        public BillingAccount billingAccount;
+        public CurrencyInfo currencyInfo;
+        public Frequency frequency;
+        public BillingSchedule billingSchedule;
+        public SubscriptionDetails subscriptionDetails;
+    }
+    
+    global class CustomerRecord {
+        public String internalId;
+        public String name;
+        public String recordType;
+        public String companyName;
+        public String url;
+        public String billingAddress1;
+        public String billingCity;
+        public String billingState;
+        public String billingCountry;
+        public String billingZip;
+        public String shippingAddress1;
+        public String shippingCity;
+        public String shippingState;
+        public String shippingCountry;
+        public String shippingZip;
+        public String comments;
+        public String phone;
+        public String billingCountryCode;
+        public String celigoSalesforceId;
+        public String salesforceId;
+        public Boolean isIndividual;
+        public String dataURI;
+    }
+    
+    global class BillingAccount {
+        public String internalId;
+        public String name;
+    }
+    
+    global class CurrencyInfo {
+        public String internalId;
+        public String name;
+    }
+    
+    global class Frequency {
+        public String internalId;
+        public String name;
+    }
+    
+    global class BillingSchedule {
+        public String internalId;
+        public String name;
+    }
+    
+    global class SubscriptionDetails {
+        public String subscriptionName;
+        public String billingSubscriptionStatus;
+        public String startDate;
+        public String endDate;
+        public String billingFrequency;
+        public String currencyCode;
+        public String nextRenewalStartDate;
+        public String netsuiteSubscriptionId;
+        public String netsuiteSalesorderId;
+        public String order;
+        public String opportunity;
+        public String mrr;
+        public String source;
+        public String autorenewal;
+        public String wpeOrderChannel;
+        public String salesType;
+        public List<SubscriptionLine> subscriptionLines;
+    }
+    
+    global class SubscriptionLine {
+        public String celigoNSsubscriptionLineId;
+        public String itemcatalogType;
+        public String parentSFSubscriptionID;
+        public String wpeHostingId;
+        public String subscriptionLineType;
+        public String billingMode;
+        public String productName;
+        public String discount;
+        public String quantity;
+        public String startDate;
+        public String endDate;
+        public String status;
+        public Boolean prorateStartDate;
+        public Boolean prorateEndDate;
+        public Boolean includeInRenewal;
+        public Boolean isIncluded;
+        public String chargeFrequency;
+        public String netsuitePricePlanId;
+        public String repeatEvery;
+        public String recurringAmount;
+    }
+}
