@@ -1,0 +1,15 @@
+/**
+ * @description  This class is created to call Mulesoft on Status change on Submit to NS and pass the payload
+ * @author       KPMG
+ * @date         Aug 1, 2025
+**/
+trigger WPE_OrderTrigger on Order (after update) {
+    List<Apex_Trigger_Switch__mdt> muteTrigger = [SELECT Id FROM Apex_Trigger_Switch__mdt WHERE DeveloperName='Order' AND Mute_Trigger__c=true];
+    if(muteTrigger!=null && !muteTrigger.isEmpty()) return;
+    
+    Map<Id,Order> oldmapOrder = (Map<Id,Order>) trigger.oldMap;
+    if(Trigger.isUpdate && Trigger.isAfter && WPE_TriggerControl.orderAfterUpdate==true){
+        WPE_OrderTriggerHandler.afterUpdate(trigger.new,oldmapOrder);
+        WPE_TriggerControl.orderAfterUpdate=false;
+    }
+}
