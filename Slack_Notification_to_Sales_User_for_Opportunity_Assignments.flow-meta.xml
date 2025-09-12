@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Check_Opportunity_Owner_s_Profile</name>
+        <label>Check Opportunity Owner&apos;s Profile</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_it_WPE_Sales</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>OpportunityRecord.Owner.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>WPE - Sales</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Publish_Opportunity_Assignment_Platform_Event</targetReference>
+            </connector>
+            <label>Is it WPE-Sales?</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Slack Notification to Sales User for Opportunity Assignment {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Slack Notification to Sales User</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Publish_Opportunity_Assignment_Platform_Event</name>
+        <label>Publish Opportunity Assignment Platform Event</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Account_Id__c</field>
+            <value>
+                <elementReference>OpportunityRecord.AccountId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Opportunity_Id__c</field>
+            <value>
+                <elementReference>OpportunityRecord.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Opp_User_Assignment__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_Opportunity_Owner_s_Profile</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>OpportunityRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Opportunity</objectType>
+    </variables>
+</Flow>

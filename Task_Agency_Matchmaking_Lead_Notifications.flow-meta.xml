@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Check_Agency_Matchmaking_Lead_Slack_Notification_Is_Active</name>
+        <label>Check Agency Matchmaking Lead Slack Notification Is Active</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Agency Matchmaking Lead Slack - Not Active</defaultConnectorLabel>
+        <rules>
+            <name>Agency_Matchmaking_Lead_Slack_Active</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Setup.Flow_Environment_Settings__c.Slack_Notifications_Matchmaking_Leads__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Publish_Agency_Matchmaking_Lead_Platform_Event</targetReference>
+            </connector>
+            <label>Agency Matchmaking Lead Slack - Active</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Task - {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Task - Agency Matchmaking Lead Notifications</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Publish_Agency_Matchmaking_Lead_Platform_Event</name>
+        <label>Publish Agency Matchmaking Lead Platform Event</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Task_ID__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Agency_Matchmaking_Lead_Slack__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_Agency_Matchmaking_Lead_Slack_Notification_Is_Active</targetReference>
+        </connector>
+        <filterFormula>AND({!$Record.Subject} = &quot;Submitted Form &apos;EG_Agency Matchmaking Directory Recommendation&apos;&quot;, {!$Record.CreatedById} = {!$Setup.Flow_Environment_Settings__c.Task_CreatedBy_ID_Agency_Matchmaking__c})</filterFormula>
+        <object>Task</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

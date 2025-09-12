@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_Order_Entry_Email_Notification</name>
+        <label>Send Order Entry Email Notification</label>
+        <locationX>50</locationX>
+        <locationY>650</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddressesArray</name>
+            <value>
+                <elementReference>Recipient_Collection</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>Order Entry Notification</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>Email_Body</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+    </actionCalls>
+    <apiVersion>59.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Assign_Source_Org_Owner_Recipient</name>
+        <label>Assign Source Org Owner Recipient</label>
+        <locationX>50</locationX>
+        <locationY>350</locationY>
+        <assignmentItems>
+            <assignToReference>Recipient_Collection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>recordId.Org_Sync_Org_1_Owner_Email__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_for_Recipients</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Team_Recipient</name>
+        <label>Assign Team Recipient</label>
+        <locationX>182</locationX>
+        <locationY>134</locationY>
+        <assignmentItems>
+            <assignToReference>Recipient_Collection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Setup.Flow_Environment_Settings__c.Email_Notifications_Order_Entry__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Does_Source_Org_Opportunity_Owner_have_a_Valid_Email</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Check_for_Recipients</name>
+        <label>Check for Recipients</label>
+        <locationX>182</locationX>
+        <locationY>542</locationY>
+        <defaultConnectorLabel>No Recipients Found</defaultConnectorLabel>
+        <rules>
+            <name>Recipients_Founds</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Recipient_Collection</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Order_Entry_Email_Notification</targetReference>
+            </connector>
+            <label>Recipients Founds</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Does_Source_Org_Opportunity_Owner_have_a_Valid_Email</name>
+        <label>Does Source Org Opportunity Owner have a Valid Email?</label>
+        <locationX>182</locationX>
+        <locationY>242</locationY>
+        <defaultConnector>
+            <targetReference>Check_for_Recipients</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Invalid Email</defaultConnectorLabel>
+        <rules>
+            <name>Valid_Email</name>
+            <conditionLogic>1 AND NOT(2)</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId.Org_Sync_Org_1_Owner_Email__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>recordId.Org_Sync_Org_1_Owner_Email__c</leftValueReference>
+                <operator>EndsWith</operator>
+                <rightValue>
+                    <stringValue>.invalid</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Source_Org_Owner_Recipient</targetReference>
+            </connector>
+            <label>Valid Email</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>Account_URL_Formula</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!$Api.Partner_Server_URL_260}, FIND( &apos;/services&apos;, {!$Api.Partner_Server_URL_260})) &amp; {!recordId.AccountId}</expression>
+    </formulas>
+    <formulas>
+        <name>Contact_URL_Formula</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!$Api.Partner_Server_URL_260}, FIND( &apos;/services&apos;, {!$Api.Partner_Server_URL_260})) &amp; {!recordId.Contact__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Opportunity_URL_Formula</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!$Api.Partner_Server_URL_260}, FIND( &apos;/services&apos;, {!$Api.Partner_Server_URL_260})) &amp; {!recordId.Id}</expression>
+    </formulas>
+    <formulas>
+        <name>Source_Org_Account_URL_Formula</name>
+        <dataType>String</dataType>
+        <expression>{!$Setup.Flow_Environment_Settings__c.Email_Notifications_Order_Entry_URL__c} &amp; {!recordId.Account.External_Id__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Source_Org_Contact_URL_Formula</name>
+        <dataType>String</dataType>
+        <expression>{!$Setup.Flow_Environment_Settings__c.Email_Notifications_Order_Entry_URL__c} &amp; {!recordId.Contact__r.External_ID__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Source_Org_Opportunity_URL_Formula</name>
+        <dataType>String</dataType>
+        <expression>{!$Setup.Flow_Environment_Settings__c.Email_Notifications_Order_Entry_URL__c} &amp; {!recordId.External_ID__c}</expression>
+    </formulas>
+    <interviewLabel>Order Entry Email - Send Order Entry Email Notification {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Order Entry Email - Send Order Entry Email Notification</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Assign_Team_Recipient</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>Email_Body</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;Hey Order Entry Team, a new Opportunity has been received and needs to be processed. Please assign and acknowledge!&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Here are the details:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!recordId.Name} - {!recordId.Sales_Type__c}&lt;/p&gt;&lt;p&gt;&lt;strong&gt;&lt;u&gt;Sales Details&lt;/u&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Account : {!Source_Org_Account_URL_Formula}&lt;/p&gt;&lt;p&gt;Contact : {!Source_Org_Contact_URL_Formula}&lt;/p&gt;&lt;p&gt;Opportunity : {!Source_Org_Opportunity_URL_Formula}&lt;/p&gt;&lt;p&gt;&lt;strong&gt;&lt;u&gt;Order Entry Details&lt;/u&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Account : {!Account_URL_Formula}&lt;/p&gt;&lt;p&gt;Contact : {!Contact_URL_Formula}&lt;/p&gt;&lt;p&gt;Opportunity : {!Opportunity_URL_Formula}&lt;/p&gt;</text>
+    </textTemplates>
+    <variables>
+        <name>Recipient_Collection</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Opportunity</objectType>
+    </variables>
+</Flow>

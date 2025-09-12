@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Updates Account flag when dedicated environment or premium plus services are included in subscription</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>calcDedicatedIndicator</name>
+        <dataType>Boolean</dataType>
+        <expression>If({!$Record.Dedicated_Plan__c} &gt; 0,true,false)</expression>
+    </formulas>
+    <formulas>
+        <name>calcPremiumIndicator</name>
+        <dataType>Boolean</dataType>
+        <expression>IF({!$Record.Premium_Plus_Indicator__c} &gt; 0,true,false)</expression>
+    </formulas>
+    <interviewLabel>Subscription - update Account Indicators {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Subscription - update Account Indicators</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>update the owning account indicators</description>
+        <name>Update_Subscription_Account_record</name>
+        <label>Update Subscription Account record</label>
+        <locationX>176</locationX>
+        <locationY>335</locationY>
+        <inputAssignments>
+            <field>Dedicated_Plan__c</field>
+            <value>
+                <elementReference>calcDedicatedIndicator</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Premium_Plus_Indicator__c</field>
+            <value>
+                <elementReference>calcPremiumIndicator</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.Account__r</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Subscription_Account_record</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>Premium_Plus_Indicator__c</field>
+            <operator>GreaterThan</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Dedicated_Plan__c</field>
+            <operator>GreaterThan</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </filters>
+        <object>Subscription__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
