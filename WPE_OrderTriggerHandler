@@ -1,0 +1,27 @@
+/**
+ * @description  This class is created to call Mulesoft on Status change on Submit to NS and pass the payload
+ * @author       KPMG
+ * @test class   WPE_OrderTriggerHandler_Test
+ * @date         Aug 1, 2025
+ */
+public class WPE_OrderTriggerHandler {
+    public static void afterUpdate(List<Order> newList,Map<Id,Order> oldMap){
+        mulesoftOrderSync(newList,oldMap);
+    }
+    public static void mulesoftOrderSync(List<Order> newList,Map<Id,Order> oldMap){
+       List<Id> orderIdsToSync = new List<Id>();
+        Id recordTypeId = Schema.SObjectType.Order.getRecordTypeInfosByName().get(WPE_ConstantUtility.Revenue_Order).getRecordTypeId();
+
+        for (Order ord : newList) {
+            Order oldOrd = oldMap.get(ord.Id);
+             // Check if the status changed to "Submit to NS"
+            if (ord.Status == WPE_ConstantUtility.Submit_To_NS && oldOrd.Status != WPE_ConstantUtility.Submit_To_NS && ord.recordTypeId==recordTypeId) {
+               orderIdsToSync.add(ord.Id);
+            }
+        }
+        
+        if (!orderIdsToSync.isEmpty() && orderIdsToSync!=null) {
+             System.enqueueJob(new WPE_OrderSyncQueueable(orderIdsToSync));// calling queable class
+        }
+     }
+}
