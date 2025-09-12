@@ -1,0 +1,242 @@
+/**
+* @description  This webservice class is created to call Mulesoft on Status change on Submit to NS and pass the payload
+* @author       KPMG
+* @test class   WPE_OrderSyncService_Test
+* @date         Aug 1, 2025
+*/
+public class WPE_OrderSyncService {
+
+public static SyncResult sendOrderToMule(Order ord) {
+        SyncResult result = new SyncResult();
+
+        WPE_PayloadHelper.Payload payload = new WPE_PayloadHelper.Payload();
+        payload.id = ord.Id;
+        payload.orderType = ord.Opportunity.Sales_Type__c!=null?ord.Opportunity.Sales_Type__c:'';
+        payload.status = ord.Status;
+        payload.description = ord.Description!=null?ord.Description:'';
+        payload.type = ord.Opportunity.Sales_Sub_Type__c!=null?ord.Opportunity.Sales_Sub_Type__c:''; //This is not required from OrderItem
+        payload.name = ord.Name;
+        payload.orderReferenceNumber = ord.OrderNumber!=null?ord.OrderNumber:'';//This is blank in salesforce
+        payload.statusCode = ord.StatusCode;
+        payload.orderNumber = ord.OrderNumber;
+        payload.orderCurrency = ord.CurrencyIsoCode; 
+        payload.createdDate = String.valueOf(ord.CreatedDate.date());
+        payload.startDate = ord.EffectiveDate!=null?String.valueOf(ord.EffectiveDate):'';//This is blank in salesforce
+        payload.activatedDate = String.valueOf(ord.ActivatedDate)!=null?String.valueOf(ord.ActivatedDate.date()):'';//Mulesoft Expecting activated date in Date format not Datetime format
+        payload.salesforceOpportunityId = ord.OpportunityId;
+        payload.sforderDepartment = ord.Contact__r.Department!=null?ord.Contact__r.Department:'';
+        payload.sforderLocation = ord.contact__r.Project_Location_1__c!=null?ord.contact__r.Project_Location_1__c:'';
+        payload.netSuiteId = ord.celigo_sfnsio__NetSuite_Id__c!=null?ord.celigo_sfnsio__NetSuite_Id__c:'';
+        payload.netSuiteOrderNumber = ord.celigo_sfnsio__NetSuite_Order_Number__c!=null?ord.celigo_sfnsio__NetSuite_Order_Number__c:'';
+        payload.netSuiteOrderStatus = ord.celigo_sfnsio__NetSuite_Order_Status__c!=null?ord.celigo_sfnsio__NetSuite_Order_Status__c:'' ;
+        payload.netSuiteRecord = ord.celigo_sfnsio__NetSuite_Record__c!=null?ord.celigo_sfnsio__NetSuite_Record__c:'';
+        payload.celigoAudit = ord.account.Celigo_Audit__c!=null?ord.account.Celigo_Audit__c:'';
+        payload.celigoAtNetSuiteID = ord.account.Celigo_AT_NetSuite_Id__c!=null?ord.account.Celigo_AT_NetSuite_Id__c:'';
+        payload.celigoAtNetSuiteSubscriptionID = ord.opportunity.Celigo_AT_NetSuite_Subscription_ID__c!=null?ord.opportunity.Celigo_AT_NetSuite_Subscription_ID__c:'';//This is blank in salesforce
+        payload.celigoAtStartDate = '';//This is not required from OrderItem
+        payload.onboardingType = ord.Onboarding_Type__c!=null?ord.Onboarding_Type__c:'';
+        payload.orderCancelledBySalesforce = ord.Order_Cancelled_by_Salesforce__c;
+        
+        payload.salesOrder = new WPE_PayloadHelper.SalesOrder();
+        payload.salesOrder.customFields = new WPE_PayloadHelper.CustomFields();
+        payload.salesOrder.customFields.orderClosedbySalesforce = WPE_ConstantUtility.ORDER_CLOSED_BY_SALESFORCE;// Not sure of this need to discuss on order close flow
+        payload.salesOrder.customFields.orderChannel =WPE_ConstantUtility.Order_Channel;//Not sure what is expected
+        payload.salesOrder.customFields.avaCustomerEntityid =ord.celigo_sfnsio__NetSuite_Id__c!=null?ord.celigo_sfnsio__NetSuite_Id__c:'';
+        payload.salesOrder.customFields.celigoSalesforceId = String.valueOf(order.AccountId);
+        payload.salesOrder.customFields.celigoSalesforceOrderId = ord.Id!=null?ord.Id:'';
+        payload.salesOrder.customFields.optionalFields = ord.Transaction_UUID_NS__c ;
+        payload.salesOrder.customFields.provisioningMeta = ord.Provisioning_Meta_Blob__c;
+        payload.salesOrder.customFields.uuid = ord.Transaction_UUID__c;
+        payload.salesOrder.customFields.subscriptionReferenceId = '';
+        
+        payload.customers = new WPE_PayloadHelper.Customers();
+        payload.customers.celigoNetsuiteId =  ord.account.NetSuite_CustomerID__c!=null?ord.account.NetSuite_CustomerID__c:'';//changed
+        payload.customers.entityId = ord.account.Name; 
+        payload.customers.companyName = ord.account.Company__c!=null?ord.account.Company__c:'';//Not in Account Layout
+        payload.customers.celigoAtSalesforceId = ord.accountId;
+        payload.customers.salesforceId =ord.Account.Id!=null?ord.Account.Id:'';
+        payload.customers.accountName = '';//pass empty
+        payload.customers.phone = ord.Account.Phone!=null?ord.Account.Phone:'';
+        payload.customers.comments = ord.Account.Description!=null?ord.Account.Description:'';
+        payload.customers.skipExportToSalesforce = ord.celigo_sfnsio__Skip_Export_To_NetSuite__c;
+        payload.customers.subsidiaryName = WPE_ConstantUtility.SUBSIDIARY_NAME;//pass 1
+        payload.customers.parentCompany = ord.Account.Parent_Company__c!=null?ord.Account.Parent_Company__c:'';
+        payload.customers.email = ord.Contact__r.Email;
+        payload.customers.studioPressCustomer = WPE_ConstantUtility.STUDIO_PRESS_CUSTOMER;//Not sure
+        payload.customers.termsName = ord.Account.Payment_Term__c;
+        payload.customers.billingContactName = ord.contact__r.name;
+        payload.customers.billingContactEmail = ord.contact__r.Email;
+        payload.customers.primaryCurrency = ord.Account.CurrencyIsoCode;
+        payload.customers.taxRegNumber = ord.account.VAT_Reg_Number__c!=null?ord.account.VAT_Reg_Number__c:'';
+        payload.customers.qstId = ord.account.Customer_Entity_QSID__c!=null?ord.account.Customer_Entity_QSID__c:'';
+        payload.customers.wpeTermSigned = String.valueOf(ord.account.TOS_Accepted_Date__c)!=null?String.valueOf(ord.account.TOS_Accepted_Date__c):'';//required
+        payload.customers.salesRepEmail = ord.opportunity.Org_Sync_Org_1_Owner_Email__c!=null?ord.opportunity.Org_Sync_Org_1_Owner_Email__c:'';
+        payload.customers.suppressSignupEmail = false;//opportunity.Org_1_Suppress_Activation_Email__c;
+        payload.customers.webAddress = ord.account.Website;
+        payload.customers.wpeTermType = ord.account.WPE_Term_Type_NS_Id__c!=null?ord.account.WPE_Term_Type_NS_Id__c:'';
+        payload.customers.termsAndConditionsLink = ord.account.WPE_Term_Type_ToS_URL__c!=null?ord.account.WPE_Term_Type_ToS_URL__c:'';
+        payload.customers.ateAgencyId = ord.opportunity.Agency_Tracking_ID__c!=null?ord.opportunity.Agency_Tracking_ID__c:'';
+        payload.customers.optionalFields = ord.Transaction_UUID_NS__c;
+        payload.customers.orderCurrency = ord.CurrencyIsoCode;//changes based on Currency
+        payload.customers.addresses = new List<WPE_PayloadHelper.Address>();
+        WPE_PayloadHelper.Address addr1 = new WPE_PayloadHelper.Address();
+        addr1.isDefaultShipping = true;//Any Boolean value
+        addr1.isDefaultBilling = false;//Any Boolean value
+        addr1.country = ord.account.ShippingCountry;
+        addr1.addressee =''; //ord.account.ShippingAddress; Not sure
+        addr1.address1 = ord.account.ShippingStreet;
+        addr1.city = ord.account.ShippingCity;
+        addr1.state = ord.account.ShippingState;
+        addr1.zip = ord.account.ShippingPostalCode;
+        addr1.phone = ord.account.Phone!=null?ord.account.Phone:'';
+        //salesOrder/customFields/uuid
+        //sforderDepartment, found: Null\n/customers/billingContactEmail expected type: String, found: Null\n/customers/billingContactName expected type: String, found: Null\n/customers/email expected type: String, found: Null\n/customers/addresses/1/state expected type: String, found: Null\n/customers/addresses/1/address1 expected type: String, found: Null\n/customers/addresses/1/city expected type
+        payload.customers.addresses.add(addr1);
+        
+        WPE_PayloadHelper.Address addr2 = new WPE_PayloadHelper.Address();
+        addr2.isDefaultShipping = false;
+        addr2.isDefaultBilling = true;
+        addr2.country = ord.account.BillingCountry;
+        addr2.addressee  =''; //ord.account.ShippingAddress; Not sure
+        addr2.address1 = ord.account.BillingStreet;
+        addr2.city = ord.account.BillingCity;
+        addr2.state = ord.account.BillingState;
+        addr2.zip = ord.account.BillingPostalCode;
+        addr2.phone = ord.account.Phone!=null?ord.account.Phone:'';
+        payload.customers.addresses.add(addr2);
+        Date contractStartDate = ord.NetSuite_Billing_Account__r.Start_Date__c;
+        String isoDateTime;
+    
+        if (ord.NetSuite_Billing_Account__r.Start_Date__c != null) {
+            DateTime startDateTime = DateTime.newInstance(ord.NetSuite_Billing_Account__r.Start_Date__c, Time.newInstance(0, 0, 0, 0));
+            isoDateTime = startDateTime.formatGmt('yyyy-MM-dd\'T\'HH:mm:ss\'Z\'');
+            System.debug('Formatted DateTime: ' + isoDateTime);
+        }
+        payload.billingAccount = new WPE_PayloadHelper.BillingAccount();
+        payload.billingAccount.celigoAtSalesforceId = ord.NetSuite_Billing_Account__c;
+        payload.billingAccount.billingSchedule = ord.NetSuite_Billing_Account__r.billing_schedule__r.Recurrence_Frequency__c;
+        payload.billingAccount.name = '1';//ord.NetSuite_Billing_Account__r.Name;
+        payload.billingAccount.orderCurrency = ord.CurrencyIsoCode;
+        payload.billingAccount.startDate = isoDateTime;//String.valueof(DateTime.newInstance(ord.NetSuite_Billing_Account__r.Start_Date__c, Time.newInstance(0, 0, 0, 0)));
+        
+        payload.billingAccount.department = payload.sforderDepartment = ord.contact__r.Department!=null?ord.contact__r.Department:'';
+        payload.billingAccount.location = ord.contact__r.Project_Location_1__c!=null?ord.contact__r.Project_Location_1__c:'';
+        payload.billingAccount.frequencyName = ord.NetSuite_Billing_Account__r.Frequency__c;
+        
+        payload.subscription = new WPE_PayloadHelper.Subscription();
+        
+        payload.subscription.name=''; 
+        payload.subscription.customer = '';
+        payload.subscription.subsidiary = WPE_ConstantUtility.SUBSIDIARY;
+        payload.subscription.currencyInfo = new WPE_PayloadHelper.CurrencyWrapper();
+        payload.subscription.currencyInfo.id = WPE_ConstantUtility.CURRENCY_INFO_ID; 
+        payload.subscription.currencyInfo.name = WPE_ConstantUtility.CURRENCY_INFO_NAME;
+        payload.subscription.billingAccount = '';
+        payload.subscription.department = WPE_ConstantUtility.DEPARTMENT_ID;//Map as per sheet
+        payload.subscription.location = WPE_ConstantUtility.LOCATION_ID;  
+        payload.subscription.initialTerm = String.valueOf(ord.Billing_Frequency__c);
+        payload.subscription.startDate = String.valueOf(ord.contract.StartDate);
+        payload.subscription.endDate = String.valueOf(ord.contract.EndDate); //It should not be blank 
+        payload.subscription.customForm = new WPE_PayloadHelper.CustomForm();
+        payload.subscription.customForm.id = '';
+        payload.subscription.customForm.name = '';
+        payload.subscription.customFields = new WPE_PayloadHelper.SubscriptionCustomFields();
+        payload.subscription.customFields.celigoAtSalesforceId = ord.account.Id;
+        payload.subscription.customFields.project = WPE_ConstantUtility.PROJECT;
+        payload.subscription.customFields.provisioningMetaBlob = ord.Provisioning_Meta_Blob__c;
+        payload.subscription.customFields.salesforceId = ord.account.Id;
+        payload.subscription.customFields.subscriptionSent = WPE_ConstantUtility.SUBSCRIPTION_SENT;
+        
+        payload.contracts = new WPE_PayloadHelper.Contracts();
+        payload.contracts.autoRenew =ord.contract.WPE_Auto_Renewal__c; 
+        payload.contracts.billingAccountID=ord.contract.WPE_Bill_To__c;
+        payload.contracts.startDate=String.valueOf(ord.contract.StartDate);
+        payload.contracts.contractTerm=String.valueOf(ord.contract.WPE_Contract_Term__c);
+        payload.contracts.contractURL=ord.Opportunity.WPE_Contract_Term_URL__c!=null?ord.Opportunity.WPE_Contract_Term_URL__c:'';
+        payload.contracts.customerID=''; //Not sure
+        payload.contracts.salesforceContractID=ord.contractId; 
+        payload.contracts.subscriptionID='';
+        payload.contracts.termLength='';
+        payload.contracts.termType=ord.Opportunity.WPE_Term_Type__c; //not in UI
+        /*
+payload.orderproductattribute= new WPE_PayloadHelper.OrderProductAttribute();
+payload.orderproductattribute.attributename ='';
+payload.orderproductattribute.orderitemid='';
+payload.orderproductattribute.attributevalue='';
+*/
+        Map<String, Object> jsonPayload = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(payload));
+        if (jsonPayload.containsKey('subscription')) {
+            Map<String, Object> subscriptionMap = (Map<String, Object>) jsonPayload.get('subscription');
+            if (subscriptionMap.containsKey('currencyInfo')) {
+                subscriptionMap.put('currency', subscriptionMap.get('currencyInfo'));
+                subscriptionMap.remove('currencyInfo');
+            } 
+            Map<String, Object> billingAccountMap  = (Map<String, Object>) jsonPayload.get('billingAccount');
+            if(billingAccountMap.containsKey('orderCurrency')) {
+                billingAccountMap.put('currency', billingAccountMap.get('orderCurrency'));
+                billingAccountMap.remove('orderCurrency');
+            } 
+            Map<String, Object> payloadMap  = (Map<String, Object>) jsonPayload;
+            if(payloadMap.containsKey('orderCurrency')) {
+                
+                payloadMap.put('currency', payloadMap.get('orderCurrency'));
+                payloadMap.remove('orderCurrency'); 
+            } 
+            Map<String, Object> customersMap  = (Map<String, Object>) jsonPayload.get('customers');
+            if(customersMap.containsKey('orderCurrency')) {
+                customersMap.put('currency', customersMap.get('orderCurrency'));
+                customersMap.remove('orderCurrency');
+            } 
+        }
+        system.debug(JSON.serializePretty(jsonPayload));
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint('callout:MulesoftSync'+WPE_ConstantUtility.MULESOFT_ORDER_API);
+        req.setMethod('POST');
+        req.setBody(JSON.serialize(jsonPayload)); 
+        
+        Http http = new Http();
+        try {
+            HttpResponse res = http.send(req);
+            if (res.getStatusCode() == 200) {
+                WPE_PayloadHelper.MuleSoftResponse resp = (WPE_PayloadHelper.MuleSoftResponse) JSON.deserialize(res.getBody(), WPE_PayloadHelper.MuleSoftResponse.class);
+                System.debug('Response: ' + resp.payload);
+                System.debug('Success response code: ' + res.getStatusCode());
+                System.debug('Body: ' + res.getBody());
+                WPE_Integration_Logger__c IntLogger = new WPE_Integration_Logger__c(
+                    WPE_Payload__c=JSON.serializePretty(jsonPayload),
+                    WPE_Orderid__c=string.ValueOf(ord.Id),
+                    WPE_Status_Code__c=res.getStatusCode(),
+                    WPE_Error_Message__c = res.getBody());
+                ord.WPE_Integration_Status__c='Success';
+            ord.WPE_Integration_Message__c=res.getBody();
+            result.updatedOrder=ord;
+            result.logger=IntLogger;
+            return result;   
+            } else {
+                System.debug('Error response code: ' + res.getStatusCode());
+                System.debug('Body: ' + res.getBody());
+                WPE_Integration_Logger__c IntLogger = new WPE_Integration_Logger__c(
+                    WPE_Payload__c=JSON.serializePretty(jsonPayload),
+                    WPE_Orderid__c=string.ValueOf(ord.Id),
+                    WPE_Status_Code__c=res.getStatusCode(),
+                    WPE_Error_Message__c = res.getBody());
+            ord.WPE_Integration_Status__c='Error';
+            ord.WPE_Integration_Message__c=res.getBody();
+            result.updatedOrder=ord;
+            result.logger=IntLogger;
+            return result;     
+            }//orderid payload response status
+        } catch (Exception e) {
+            System.debug('Callout error: ' + e.getMessage()); 
+            ord.WPE_Integration_Status__c='Error';
+            ord.WPE_Integration_Message__c=e.getMessage();
+            ord.Status='Needs Attention';
+            result.updatedOrder=ord;
+            return result;
+        }
+    }
+    public class SyncResult {
+    public Order updatedOrder = new Order();
+    public WPE_Integration_Logger__c logger = new WPE_Integration_Logger__c();
+}
+}
