@@ -1,0 +1,171 @@
+/**
+ * @description  This class is created as an helper class for WPE_OrderSyncService for payload wrapper
+ * @author       KPMG
+ * @date         Aug 1, 2025
+ */
+public class WPE_PayloadHelper { 
+    public class MuleSoftResponse {
+        public Boolean success;
+        public String apiName;
+        public String version;
+        public String correlationId;
+        public String requestTimestamp;
+        public String responseTimestamp;
+        public String payload;
+        public Map<String, Object> errorDetails;
+    }
+  
+    public class Payload {
+        public String id;
+        public String orderType;
+        public String status;
+        public String description;
+        public String type;
+        public String name;
+        public String orderReferenceNumber;
+        public String statusCode;
+        public String orderNumber;
+        public String orderCurrency;
+        public String createdDate;
+        public String startDate;
+        public String activatedDate;
+        public String salesforceOpportunityId;
+        public String sforderDepartment;
+        public String sforderLocation;
+        public String netSuiteId;
+        public String netSuiteOrderNumber;
+        public String netSuiteOrderStatus;
+        public String netSuiteRecord;
+        public String celigoAudit;
+        public String celigoAtNetSuiteID;
+        public String celigoAtNetSuiteSubscriptionID;
+        public String celigoAtStartDate;
+        public String onboardingType;
+        public Boolean orderCancelledBySalesforce;
+        public SalesOrder salesOrder;
+        public Customers customers;
+        public BillingAccount billingAccount;
+        public Subscription subscription;
+        public Contracts contracts;
+        public OrderProductAttribute orderproductattribute;
+    }
+    public class SalesOrder {
+        public CustomFields customFields;
+    }
+    public class CustomFields {
+        public Boolean orderClosedbySalesforce;
+        public String orderChannel;
+        public String avaCustomerEntityid;
+        public String celigoSalesforceId;
+        public String celigoSalesforceOrderId;
+        public String optionalFields;
+        public String provisioningMeta;
+        public String uuid;
+        public String subscriptionReferenceId;
+    }
+    public class Customers {
+        public String celigoNetsuiteId;
+        public String entityId;
+        public String companyName;
+        public String celigoAtSalesforceId;
+        public String salesforceId;
+        public String accountName;
+        public String phone;
+        public String comments;
+        public Boolean skipExportToSalesforce;
+        public String subsidiaryName;
+        public String parentCompany;
+        public String email;
+        public Boolean studioPressCustomer;
+        public String termsName;
+        public String billingContactName;
+        public String billingContactEmail;
+        public String primaryCurrency;
+        public String taxRegNumber;
+        public String qstId;
+        public String wpeTermSigned; 
+        public String salesRepEmail;
+        public Boolean suppressSignupEmail;
+        public String webAddress;
+        public String wpeTermType;
+        public String termsAndConditionsLink;
+        public String ateAgencyId;
+        public String optionalFields;
+        public String orderCurrency;
+        public List<Address> addresses;
+    }
+    public class Address {
+        public Boolean isDefaultShipping;
+        public Boolean isDefaultBilling;
+        public String country;
+        public String addressee;
+        public String address1;
+        public String city;
+        public String state;
+        public String zip;
+        public String phone;
+    }
+    public class BillingAccount {
+        public String celigoAtSalesforceId;
+        public String billingSchedule;
+        public String name;
+        public String orderCurrency;
+        public String startDate;
+        public String department;
+        public String location;
+        public String frequencyName;
+    }
+    public class Subscription {
+        public String name;
+        public String customer;
+        public String subsidiary;
+        public CurrencyWrapper currencyInfo;
+        public String billingAccount;
+        public String department;
+        public String location;
+        public String initialTerm;
+        public String startDate;
+        public String endDate;
+        public CustomForm customForm;
+        public SubscriptionCustomFields customFields;
+    }
+    public class CurrencyWrapper {
+        public String id;
+        public String name;
+    }
+    public class CustomForm {
+        public String id;
+        public String name;
+    }
+    public class SubscriptionCustomFields {
+        public String celigoAtSalesforceId;
+        public Boolean project;
+        public String provisioningMetaBlob;
+        public String salesforceId;
+        public Boolean subscriptionSent;
+    }
+    public class Contracts{    
+        public Boolean autoRenew;
+        public String billingAccountID;
+        public String startDate;
+        public String contractTerm;
+        public String contractURL;
+        public String customerID;
+        public String salesforceContractID;
+        public String subscriptionID;
+        public String termLength;//will check later might require integer
+        public String termType;
+    }
+    public class OrderProductAttribute{
+        public String AttributeName;
+        public String AttributeValue;
+        public Id OrderItemId;
+     
+    } 
+    public class Contacts{
+        public String Name;
+        public String AttributeValue;
+        public Id OrderItemId;
+     
+    }    
+}
