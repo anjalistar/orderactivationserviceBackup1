@@ -1,0 +1,31 @@
+global class WPE_AssetTerminationBatch implements Database.Batchable<SObject>, Database.Stateful {
+    
+    global Database.QueryLocator start(Database.BatchableContext bc) {
+        // Query assets that need to be terminated
+        // Rule: LifecycleEndDate < today and Status != 'Terminated'
+        Date today = System.today();
+        DateTime endOfDay = DateTime.newInstance(today, Time.newInstance(23,59,59,0));
+        
+        String query = 'SELECT Id, Status, LifecycleEndDate ' +
+            'FROM Asset ' +
+            'WHERE LifecycleEndDate != null ' +
+            'AND LifecycleEndDate < ' + endOfDay.formatGmt('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ') +
+            ' AND WPE_Status2__c != \'Terminated\'';
+       
+        return Database.getQueryLocator(query);
+    }
+    
+    global void execute(Database.BatchableContext bc, List<Asset> scope) {
+        for (Asset a : scope) {
+            a.WPE_Status2__c = 'Terminated';
+            
+        }
+        if (!scope.isEmpty()) {
+            update scope;
+        }
+    }
+    
+    global void finish(Database.BatchableContext bc) {
+        System.debug('WPE_AssetTerminationBatch finished. Assets processed.');
+    }
+}
