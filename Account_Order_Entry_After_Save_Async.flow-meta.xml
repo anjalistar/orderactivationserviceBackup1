@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Assign_Account_for_Update</name>
+        <label>Assign Account for Update</label>
+        <locationX>374</locationX>
+        <locationY>276</locationY>
+        <assignmentItems>
+            <assignToReference>Current_Account.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Billing_Country_Code</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Billing_Country_Code</name>
+        <label>Assign Billing Country Code</label>
+        <locationX>242</locationX>
+        <locationY>492</locationY>
+        <assignmentItems>
+            <assignToReference>Current_Account.BillingCountryCode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Org1_Billing_Country__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Billing_State</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Billing_State</name>
+        <label>Assign Billing State</label>
+        <locationX>242</locationX>
+        <locationY>792</locationY>
+        <assignmentItems>
+            <assignToReference>Current_Account.BillingState</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Org1_Billing_State__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_3</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Decision_3</name>
+        <label>Decision 3</label>
+        <locationX>374</locationX>
+        <locationY>984</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_1_of_Decision_3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$User.Full_Name__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Data Migration User</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Account</targetReference>
+            </connector>
+            <label>Outcome 1 of Decision 3</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Update_Billing_Country_Code</name>
+        <label>Update Billing Country Code?</label>
+        <locationX>374</locationX>
+        <locationY>384</locationY>
+        <defaultConnector>
+            <targetReference>Update_Billing_State</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No - Country Code</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Country_Code</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.BillingCountryCode</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Org1_Billing_Country__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$User.Full_Name__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Data Migration User</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Billing_Country_Code</targetReference>
+            </connector>
+            <label>Yes - Country Code</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Update_Billing_State</name>
+        <label>Update Billing State?</label>
+        <locationX>374</locationX>
+        <locationY>684</locationY>
+        <defaultConnector>
+            <targetReference>Decision_3</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No - State</defaultConnectorLabel>
+        <rules>
+            <name>Yes_State</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.BillingState</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Org1_Billing_State__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$User.Full_Name__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Data Migration User</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Billing_State</targetReference>
+            </connector>
+            <label>Yes - State</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Account - Order Entry After Save Async {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Account - Order Entry After Save Async</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Account</name>
+        <label>Update Account</label>
+        <locationX>242</locationX>
+        <locationY>1092</locationY>
+        <inputReference>Current_Account</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Created_In_Org1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Account</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <scheduledPaths>
+            <name>Run_Asynchronously</name>
+            <connector>
+                <targetReference>Assign_Account_for_Update</targetReference>
+            </connector>
+            <label>Run Asynchronously</label>
+            <offsetNumber>1</offsetNumber>
+            <offsetUnit>Minutes</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>Current_Account</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+</Flow>

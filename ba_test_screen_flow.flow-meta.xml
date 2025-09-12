@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <environments>Default</environments>
+    <formulas>
+        <name>absresutls</name>
+        <dataType>Number</dataType>
+        <expression>BLANKVALUE({!recOppIn.Subscription_Current_USD_Price__c},0)</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>calcnestedIf</name>
+        <dataType>Number</dataType>
+        <expression>IF(
+{!recOppIn.Short_Term_Project__c},
+(BLANKVALUE({!recOppIn.Opportunity_USD_Price__c},0) - BLANKVALUE({!recOppIn.Subscription_Current_USD_Price__c},0)) / 12,
+BLANKVALUE({!recOppIn.Opportunity_USD_Price__c},0) - BLANKVALUE({!recOppIn.Subscription_Current_USD_Price__c},0)
+)</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>subUSDNull</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNULL({!recOppIn.Subscription_Current_USD_Price__c})</expression>
+    </formulas>
+    <interviewLabel>ba test screen flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>ba test screen flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <name>show_values</name>
+        <label>show values</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>dispOppFields</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Rec Type:  &lt;/strong&gt;{!recOppIn.RecordType.DeveloperName}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;OPP USD Price: &lt;/strong&gt;{!recOppIn.Opportunity_USD_Price__c}&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Sub USD Price: &lt;/strong&gt;{!recOppIn.Subscription_Current_USD_Price__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Split Flag: &lt;/strong&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!recOppIn.Split_Opportunity__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;STP Flag: &lt;/strong&gt;{!recOppIn.Short_Term_Project__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Booking Amt: &lt;/strong&gt;{!recOppIn.Booking_Amount__c}&lt;/p&gt;&lt;p&gt;&lt;strong&gt;BA Override: &lt;/strong&gt;{!recOppIn.Booking_Amount_Over__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;ST Nested If Calc: &lt;/strong&gt;{!calcnestedIf}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;SubUSD Null: &lt;/strong&gt; {!subUSDNull}&lt;/p&gt;&lt;p&gt;&lt;strong&gt;ABS: &lt;/strong&gt;{!absresutls}&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>show_values</targetReference>
+        </connector>
+    </start>
+    <status>Draft</status>
+    <variables>
+        <name>recOppIn</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Opportunity</objectType>
+    </variables>
+</Flow>

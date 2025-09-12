@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <customErrors>
+        <name>There_can_be_only_one</name>
+        <label>There can be only one</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Scorecard_Scores_Update</targetReference>
+        </connector>
+        <customErrorMessages>
+            <errorMessage>ۜ\(סּںסּَ` )/ۜ  Hi {!$User.FirstName}!   Hey, only one Agency Scorecard is used per Account and there appears to already be one in place. (Regrets for not mentioning it sooner)</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <name>New_Scorecard</name>
+        <label>New Scorecard?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Scorecard_Scores_Update</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_New_Scorecard</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_for_any_other_Scorecards_on_Account</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Redundant_Agency_Scorecard</name>
+        <label>Redundant Agency Scorecard?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Scorecard_Scores_Update</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Redundant_Agency_Scorecard</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Check_for_any_other_Scorecards_on_Account</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>There_can_be_only_one</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Scorecard_Scores_Update</name>
+        <label>Scorecard Scores Update</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Scorecard_Scores_Update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Flow.CurrentDate</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Scorecard_Scores</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>BaSaWaTa_Avg</name>
+        <dataType>Number</dataType>
+        <expression>( 
+{!$Record.Sc_Business_Acumen__c}+
+{!$Record.Sc_Sales_Ability__c}+
+{!$Record.Sc_Work_Agility__c}+
+{!$Record.Sc_Technical_Aptitude__c} 
+)
+ / 4</expression>
+        <scale>1</scale>
+    </formulas>
+    <formulas>
+        <name>IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>IsNew()</expression>
+    </formulas>
+    <formulas>
+        <name>Sc_BaSaWaTa</name>
+        <dataType>Number</dataType>
+        <expression>{!$Record.Sc_Business_Acumen__c}+
+{!$Record.Sc_Sales_Ability__c}+
+{!$Record.Sc_Work_Agility__c}+
+{!$Record.Sc_Technical_Aptitude__c}</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Sc_Business_Acumen</name>
+        <dataType>Number</dataType>
+        <expression>Blankvalue(Value(Left(Text( {!$Record.BA_Market_Awareness__c} ) , 1)),0) + 
+Blankvalue(Value(Left(Text( {!$Record.BA_Revenue_Plan__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.BA_Risk_Management__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.BA_Strategic_Thinking__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.BA_WPE_Thought_Leadership__c} ), 1)),0)</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>SC_MOT</name>
+        <dataType>Number</dataType>
+        <expression>Blankvalue(Value(Left(Text( {!$Record.MOT_Agency_Introductions__c} ) , 1)),0) + 
+Blankvalue(Value(Left(Text( {!$Record.MOT_Brand_Lead_Sharing__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.MOT_Co_Marketing__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.MOT_Commissions__c} ), 1)),0) +
+IF(ISBLANK( {!$Record.MOT_Standardization__c} ),0,1)</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>SC_OBJ</name>
+        <dataType>Number</dataType>
+        <expression>Blankvalue(Value(Left(Text( {!$Record.OBJ_ARPU_Range__c} ) , 1)),0) + 
+Blankvalue(Value(Left(Text( {!$Record.OBJ_Net_New_Deal_Introductions__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.OBJ_Net_New_Opportunities__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.OBJ_Net_New_Wins__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.OBJ_Upgrades_Opportunites__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.OBJ_Upgrades_Wins__c} ), 1)),0)</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Sc_Sales_Ability</name>
+        <dataType>Number</dataType>
+        <expression>Blankvalue(Value(Left(Text( {!$Record.SA_Account_upgrades__c} ) , 1)),0) + 
+Blankvalue(Value(Left(Text( {!$Record.SA_Co_selling__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.SA_Lead_Sources__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.SA_Post_launch_management__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.SA_RFPs_winning_business__c} ), 1)),0)</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Sc_Technical_Aptitude</name>
+        <dataType>Number</dataType>
+        <expression>Blankvalue(Value(Left(Text( {!$Record.TA_DevOps_Workflows__c} ) , 1)),0) + 
+Blankvalue(Value(Left(Text( {!$Record.TA_Headless_Atlas__c}) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.TA_Launch_Readiness__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.TA_Shared_v_Premium__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.TA_Software_Add_Ons__c} ), 1)),0)</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Sc_Work_Agility</name>
+        <dataType>Number</dataType>
+        <expression>Blankvalue(Value(Left(Text( {!$Record.WA_Accessing_PAM__c} ) , 1)),0) + 
+Blankvalue(Value(Left(Text( {!$Record.WA_Accessing_Support__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.WA_Growth_Plan__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.WA_Slack_Community__c} ) , 1)),0) +
+Blankvalue(Value(Left(Text( {!$Record.WA_Using_the_portals__c} ), 1)),0)</expression>
+        <scale>0</scale>
+    </formulas>
+    <interviewLabel>Agency Scorecard Fast {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Agency Scorecard Fast Before Save</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Check_for_any_other_Scorecards_on_Account</name>
+        <label>Check for any other Scorecards on Account</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Redundant_Agency_Scorecard</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Account__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Account__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Agency_Scorecard__c</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Scorecard_Scores</name>
+        <label>Update Scorecard Scores</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Scorecard_Totals</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>MOT__c</field>
+            <value>
+                <elementReference>SC_MOT</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OBJ__c</field>
+            <value>
+                <elementReference>SC_OBJ</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Sc_Business_Acumen__c</field>
+            <value>
+                <elementReference>Sc_Business_Acumen</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Sc_Sales_Ability__c</field>
+            <value>
+                <elementReference>Sc_Sales_Ability</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Sc_Technical_Aptitude__c</field>
+            <value>
+                <elementReference>Sc_Technical_Aptitude</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Sc_Work_Agility__c</field>
+            <value>
+                <elementReference>Sc_Work_Agility</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Scorecard_Totals</name>
+        <label>Update Scorecard Totals</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>BaSaWaTa_Avg__c</field>
+            <value>
+                <elementReference>BaSaWaTa_Avg</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>BaSaWaTa__c</field>
+            <value>
+                <elementReference>Sc_BaSaWaTa</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>New_Scorecard</targetReference>
+        </connector>
+        <object>Agency_Scorecard__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -1,0 +1,3872 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Asgn_Closed_Locked_values</name>
+        <label>Asgn - Closed (Locked) values</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Pipeline_Owner_Role_Locked__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Owner.UserRole.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_By_User_Role_Locked_Closed_Won_Closed_Lost</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asgn_Closed_Locked_values_Closed_Won_Closed_Lost</name>
+        <label>Asgn - Closed (Locked) values - Closed Won/Closed Lost</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.CLOSED_Owner_Role_Locked__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Owner.UserRole.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Stage_Moved_from_Stage_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asgn_Created_Locked_values</name>
+        <label>Asgn - Created (Locked) values</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Pipeline_Owner_Role_Locked__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Owner.UserRole.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.Created_By_Role_Locked__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.CreatedBy.Profile.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_By_User_Role_Locked_Closed_Won_Closed_Lost</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asn_Dashes_to_lead_source_detail</name>
+        <label>Asn - Dashes to lead source detail</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Lead_Source_Detail__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>-----</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>BAPI_Auto_Close</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>UPDATE | Closed Won/Lost Date Stamp - This will update the Stage: Closed Won Date Stamp field with the date the action occurred and not the Close Date.</description>
+        <name>asn_Fields_on_Closed_Lost</name>
+        <label>Asn - Fields on Closed Lost</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Stage_Closed_WON_Lost_Date_Stamp__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_SDR_Role_Locked</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>UPDATE | Closed Won Date Stamp - This will update the Stage: Closed Won Date Stamp field with the date the action occurred and not the Close Date.
+
+UPDATE | Is Won Checkbox - This will update the Is Won Checkbox</description>
+        <name>asn_fields_on_closed_won</name>
+        <label>Asn - Fields on closed won</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Is_WON__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.Stage_Closed_WON_Lost_Date_Stamp__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_SDR_Role_Locked</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asn_Update_Short_Term_Flag</name>
+        <label>Asn - Update Short Term Flag</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Short_Term_Project__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_to_Lead_source_Detail</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Created_User_s_Role_On_Creation</name>
+        <label>Assign Created User&apos;s Role On Creation</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Created_By_Role__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$UserRole.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Enable_MY_Contract</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Created_User_s_Role_On_Updation</name>
+        <label>Assign Created User&apos;s Role On Updation</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Created_By_Role__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.CreatedBy.UserRole.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Enable_MY_Contract</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Forecast_Stage_Updates</name>
+        <label>Assign - Forecast Stage Updates</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Forecast_Stage__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ForecastStageLogic</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Top_Strategic_Agency_Independent</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Mark_ISV_Accelerate_Inbound</name>
+        <label>Assign - Mark ISV Accelerate Inbound</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.ISV_Accelerate__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Inbound</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Highest_Open_Stage_Days_in_Stage</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Opportunity_Source_Detail_As_Empty</name>
+        <label>Assign Opportunity Source Detail As Empty</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Opportunity_Source_Detail__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_Criteria_for_SLA</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Opportunity_Source_Detail_With_Value</name>
+        <label>Assign Opportunity Source Detail With Value</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Opportunity_Source_Detail__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Most_Impactful_Sales_Play__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_Criteria_for_SLA</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Push_counter_not_null</name>
+        <label>Assign - Push counter not null</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Push_Count__c</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_ISV_Accelerate</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Push_counter_Null</name>
+        <label>Assign - Push counter Null</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Push_Count__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_ISV_Accelerate</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_SDR_Role_Locked</name>
+        <label>Assign - SDR Role (Locked)</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.SDR_Role_Locked__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.SDR__r.UserRole.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Start_date_End_date_6_months</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Set_Close_Date</name>
+        <label>Assign - Set Close Date</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.CloseDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CloseDateformula</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Name</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Stage_Moved_from_Stage_0</name>
+        <label>Assign Stage: Moved from Stage 0</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Stage_Moved_from_Stage_0__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Push_Counter</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Stamp_Top_Strategic_Agency_Conglomerate</name>
+        <label>Assign - Stamp Top Strategic Agency Conglomerate</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Top_Strategic_Agency__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Conglomerate</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Closed_Won_or_Closed_Lost</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Stamp_Top_Strategic_Agency_Independent</name>
+        <label>Assign - Stamp Top Strategic Agency Independent</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Top_Strategic_Agency__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Independent</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Top_Strategic_Agency_Conglomerate</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Term_Length_In_Months</name>
+        <label>Assign Term Length(In Months)</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Term_Length_In_Months__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>TermLength</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Assign_Top_Parent_Account1</name>
+        <label>Assign Top Parent Account</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Top_Parent_Account__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>TopParentAccountOwner</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Copy_1_of_Get_User_Role</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Update_Highest_Open_Stage_and_Date</name>
+        <label>Assign - Update Highest Open Stage # and Date</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Highest_Open_Stage_Num__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NewHighestStageNum</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.Highest_Open_Stage_Date_Entered__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Close_Date_Override</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Var</name>
+        <label>Assign Var</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varTerritory</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Territory.ParentTerritory2.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varParentTerritory</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Territory.ParentTerritory2.ParentTerritory2.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Opportunity</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Var_0</name>
+        <label>Assign Var</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varTerritory</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Territory_2.ParentTerritory2.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varParentTerritory</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Territory_2.ParentTerritory2.ParentTerritory2.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Opportunity_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Champion</name>
+        <label>Champion</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Champion_MEDDPPICC__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Opp_Source_is_blank</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Copy_1_of_Update_DQ_Approver_with_SDR_s_Manager</name>
+        <label>Update DQ Approver with SSDR&apos;s Manager</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.DQ_Approver__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.SSDR__r.ManagerId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Top_Parent_Account</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Copy_1_of_Update_Manager_Owner_Role_Backend_Fields</name>
+        <label>Update Manager Owner Role Backend Fields</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Opportunity_Owner_Manager_Role__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_User_Manager_Role.UserRole.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Is_this_a_Cloned_Opp</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Decision_Criteria</name>
+        <label>Decision Criteria</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Decision_Criteria_MEDDPPICC__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Decision_Process_Checkbox</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Decision_Process</name>
+        <label>Decision Process</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Decision_Process_MEDDPPICC__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Identified_Pain_Checkbox</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Economic_Buyer</name>
+        <label>Economic Buyer</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Economic_Buyer_MEDDPPICC__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Decision_Checkbox_Update</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Identified_Pain</name>
+        <label>Identified Pain</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Identified_Pain_MEDDPPICC__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Champion_Checkbox</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Metrics</name>
+        <label>Metrics</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Metrics_MEDDPPICC__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Economic_Buyer_checkbox_update</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Date_and_Time_of_Stage_change_to_Closed_Won_Pending</name>
+        <label>Set Date and Time of Stage change to Closed Won Pending</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Stage_Closed_Won_Pending_Date_stamp__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Standard_Fixed_Term_TOS_check</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>BAPI Opportunities with a ZenDesk Billing Ticket should proceed directly to Closed Won</description>
+        <name>Set_Stage_to_Closed_Won</name>
+        <label>Set Stage to Closed Won</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.StageName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Closed Won</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>xDR_Points</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_Booking_Amount_Override</name>
+        <label>Update Booking Amount Override</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Booking_Amount_Over__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_Closed_Won_Upgrade_Opportunity_for_POC_Trial</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_DQ_Approver_with_ADR_s_Manager</name>
+        <label>Update DQ Approver with ADR&apos;s Manager</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.DQ_Approver__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.ADR__r.ManagerId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Top_Parent_Account</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_DQ_Approver_with_BDR_s_Manager</name>
+        <label>Update DQ Approver with BDR&apos;s Manager</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.DQ_Approver__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.BDR__r.ManagerId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Top_Parent_Account</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_DQ_Approver_with_CDR_s_Manager</name>
+        <label>Update DQ Approver with CDR&apos;s Manager</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.DQ_Approver__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.CDR__r.ManagerId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Top_Parent_Account</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_DQ_Approver_with_SDR_s_Manager</name>
+        <label>Update DQ Approver with SDR&apos;s Manager</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.DQ_Approver__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.SDR__r.ManagerId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Top_Parent_Account</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_Opp_Source</name>
+        <label>Update Opp Source</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Opportunity_Source__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.LeadSource</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Opp_Source_Detail_is_blank</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_Opp_Source_Detail</name>
+        <label>Update Opp Source Detail</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Opportunity_Source_Detail__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Lead_Source_Detail__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dcn_Project_Location_Blank</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_Opportunity_owner_manager</name>
+        <label>Update Opportunity owner manager</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.OpportunityOwnerManager__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Owner.ManagerId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>isExecuted</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Decision_To_Check_SDR_CDR_BDR_ADR</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_Owner_Role_Backend_Fields</name>
+        <label>Update Owner Role Backend Fields</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Opportunity_Owner_Role__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Copy_1_of_Get_User_Role.UserRole.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_User_Manager_Role</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>UpdateOrderChannel</name>
+        <label>Update Order Channel</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Order_Channel__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Subscription_Records.WPE_Order_Channel__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_Update_Opp_Owner_Manager</targetReference>
+        </connector>
+    </assignments>
+    <customErrors>
+        <name>Blocked_move_to_Closed_Won_Pending</name>
+        <label>Blocked move to Closed Won Pending</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <customErrorMessages>
+            <errorMessage>As the Customer has not currently accepted the FTC, the Opportunity cannot be moved to Closed Won Pending</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <name>POC_Upgrade_Requires_Active_Subscription_for_Closed_Won</name>
+        <label>POC Upgrade Requires Active Subscription for Closed Won</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <customErrorMessages>
+            <errorMessage>This Order is still processing. Please contact O2C for details.</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <name>Add_to_Lead_source_Detail</name>
+        <label>Add &quot;-----&quot; to Lead source Detail</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>BAPI_Auto_Close</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Add_Dashes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.LeadSource</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Lead_Source_Detail__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asn_Dashes_to_lead_source_detail</targetReference>
+            </connector>
+            <label>Add Dashes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Assign_Top_Parent_Account</name>
+        <label>Assign Top Parent Account</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_Get_User_Role</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Assign_Top_Parent_Account2</name>
+            <conditionLogic>(1 OR (2 AND 3) )AND 4</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>0 - Pre Sales Qualified</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.ParentId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Top_Parent_Account1</targetReference>
+            </connector>
+            <label>Assign Top Parent Account</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>BAPI opportunities require a Zen desk Billing Ticket to be manually created and entered. If done, the Opportunity should be closed directly to Closed Won. This step checks to see if the Stage needs to be updated</description>
+        <name>BAPI_Auto_Close</name>
+        <label>BAPI Auto Close</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>xDR_Points</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Auto Close Not Required</defaultConnectorLabel>
+        <rules>
+            <name>Zendesk_ticket_present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed Won Pending</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ZenDeskBillingIsPopulated</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.Source__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>BAPI</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Stage_to_Closed_Won</targetReference>
+            </connector>
+            <label>Auto Close Required</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Criteria_for_Activity</name>
+        <label>Check Criteria for Activity</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Get_Subscription_Records</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_Activity_Logged_by_owner</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Activity_By_Owner__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Activity_By_Owner__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Record_of_Time_to_Stage_Change</targetReference>
+            </connector>
+            <label>Is Activity Logged by owner?</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Criteria_for_SLA</name>
+        <label>Check Criteria for SLA</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Check_Criteria_for_Activity</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_Record_New</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Activity_By_Owner__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Record_of_First_Touch_SLA</targetReference>
+            </connector>
+            <label>Is Record New?</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_If_Opportunity_is_Self_Serve</name>
+        <label>Check If Opportunity is Self Serve</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Update_Opp_Owner_Manager</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Self_Serve</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Subscription_Records.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UpdateOrderChannel</targetReference>
+            </connector>
+            <label>Self Serve</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_On_Most_Impactful_Sales_Play</name>
+        <label>Check On Most Impactful Sales Play</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Check_Criteria_for_SLA</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Value_Exist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Most_Impactful_Sales_Play__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Opportunity_Source_Detail_With_Value</targetReference>
+            </connector>
+            <label>Value Exist</label>
+        </rules>
+        <rules>
+            <name>Value_Does_Not_Exist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.Most_Impactful_Sales_Play__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Most_Impactful_Sales_Play__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Opportunity_Source_Detail_As_Empty</targetReference>
+            </connector>
+            <label>Value Does Not Exist</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_2_of_Update_Owner_Role_Fields_on_Opp</name>
+        <label>Update Owner Manager Role Fields on Opp</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Is_this_a_Cloned_Opp</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Update_Manager_Owner_Role_Fields_on_Opp</name>
+            <conditionLogic>(1 OR 2) AND 3 AND 4</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_User_Manager_Role.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_User_Manager_Role.UserRole.Name</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Update_Manager_Owner_Role_Backend_Fields</targetReference>
+            </connector>
+            <label>Update Manager Owner Role Fields on Opp</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This is an upgrade or downgrade or STP opp.  Get the current MRR from the associated Subscription</description>
+        <name>Current_Subscription</name>
+        <label>Current Subscription</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Is_Created_User_s_Role_Exist</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Opp_related_to_current_Subscription</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Subscription__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Current_MRR</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Opp related to current Subscription</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Champion_Checkbox</name>
+        <label>Champion Checkbox</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Opp_Source_is_blank</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Champion_Checkbox</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Champion_MEDDPPICC__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Champion_Contact_MEDDPPICC__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Champion</targetReference>
+            </connector>
+            <label>Yes - Champion Checkbox</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Close_Date_Override</name>
+        <label>Close Date Override?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Update_Name</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No - Set Close Date</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Set_Close_Date</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CampaignId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>absurd</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Set_Close_Date</targetReference>
+            </connector>
+            <label>Yes - Set Close Date</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Date an Opportunity entered the &quot;Closed Won&quot; Stage. - Workflow From Org 1</description>
+        <name>dcn_Closed_Won_or_Closed_Lost</name>
+        <label>Closed Won or Closed Lost?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_SDR_Role_Locked</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Closed_Won</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed Won</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Stage_Closed_WON_Lost_Date_Stamp__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>asn_fields_on_closed_won</targetReference>
+            </connector>
+            <label>Yes - Closed Won</label>
+        </rules>
+        <rules>
+            <name>Yes_Closed_Lost</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed Lost</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>asn_Fields_on_Closed_Lost</targetReference>
+            </connector>
+            <label>Yes - Closed Lost</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Decision_By_User_Role_Locked</name>
+        <label>Decision - By User Role (Locked)</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Asgn_Created_Locked_values</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Closed_By_User_Role_Locked</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed Won Pending</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asgn_Closed_Locked_values</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Closed By User Role (Locked)</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Decision_Checkbox_Update</name>
+        <label>Decision Checkbox Update</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Decision_Process_Checkbox</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Decision_Checkbox_Update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Decision_Criteria_MEDDPPICC__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Decision_Criteria_Notes_MEDDPPICC__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_Criteria</targetReference>
+            </connector>
+            <label>Yes - Decision Checkbox Update</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Decision_Process_Checkbox</name>
+        <label>Decision Process Checkbox</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Identified_Pain_Checkbox</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Decision_Process_Checkbox</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Decision_Process_MEDDPPICC__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Decision_Process_Notes_MEDDPPICC__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_Process</targetReference>
+            </connector>
+            <label>Yes - Decision Process Checkbox</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Alternative to Salesforce standard &quot;Forecast Category&quot;</description>
+        <name>dcn_Do_Forecast_Stage_Logic</name>
+        <label>Do Forecast Stage Logic?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Top_Strategic_Agency_Independent</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No - Do Forecast Stage Logic</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Do_Forecast_Stage_Logic</name>
+            <conditionLogic>1 OR 2 OR (3 AND 4) or 5 or 6</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IsClosed</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Forecast_Stage__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Forecast_Stage__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ForecastCategory</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Forecast_Stage__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Forecast_Stage_Updates</targetReference>
+            </connector>
+            <label>Yes - Do Forecast Stage Logic</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Economic_Buyer_checkbox_update</name>
+        <label>Economic Buyer checkbox update</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Decision_Checkbox_Update</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Economic_Buyer_checkbox_update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Economic_Buyer_MEDDPPICC__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Economic_Buyer_Contact_MEDDPPICC__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Economic_Buyer</targetReference>
+            </connector>
+            <label>Yes - Economic Buyer checkbox update</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Highest_Open_Stage_Days_in_Stage</name>
+        <label>Highest Open Stage: Days in Stage?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Close_Date_Override</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No - Stage moved forward not backwards</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Stage_moved_forward_not_backwards</name>
+            <conditionLogic>(1 AND 2) OR 3</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>NewHighestStageNum</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>$Record__Prior.Highest_Open_Stage_Num__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Update_Highest_Open_Stage_and_Date</targetReference>
+            </connector>
+            <label>Yes - Stage moved forward not backwards</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Identified_Pain_Checkbox</name>
+        <label>Identified Pain Checkbox</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Champion_Checkbox</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Identified_Pain_Checkbox</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Identified_Pain_MEDDPPICC__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Identified_Pain_Notes_MEDDPPICC__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Identified_Pain</targetReference>
+            </connector>
+            <label>Yes - Identified Pain Checkbox</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Is_this_a_Cloned_Opp</name>
+        <label>dcn Is this a Cloned Opp?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No_not_cloned_Split</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Is_Clone__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Split_Opportunity_Lookup__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Split_Opportunity_ID__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>dcn_Most_Recent_Cadence_Update</targetReference>
+            </connector>
+            <label>No - not cloned Split</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>New LeadSource value for Org2. AWS ISVAccelerate is from Org 1.</description>
+        <name>dcn_ISV_Accelerate</name>
+        <label>ISV Accelerate?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Highest_Open_Stage_Days_in_Stage</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No - ISV Accelerate</defaultConnectorLabel>
+        <rules>
+            <name>Yes_ISV_Accelerate</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Lead_Source_Detail__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>AWS ISV Accelerate</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ISV_Accelerate__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Mark_ISV_Accelerate_Inbound</targetReference>
+            </connector>
+            <label>Yes - ISV Accelerate</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Metrics_Checkbox_Update</name>
+        <label>Metrics Checkbox Update</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Economic_Buyer_checkbox_update</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Metrics_Checkbox_Update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Metrics_Notes_MEDDPPICC__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Metrics_MEDDPPICC__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Metrics</targetReference>
+            </connector>
+            <label>Yes - Metrics Checkbox Update</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>From PB - Create and update Opportunity Process Builder from Org1</description>
+        <name>dcn_Most_Recent_Cadence_Update</name>
+        <label>Most Recent Cadence Update</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Metrics_Checkbox_Update</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Most_Recent_Cadence_Update</name>
+            <conditionLogic>1 AND (2 AND 3) AND 4 AND 5</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.SalesLoft1__Primary_Contact__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.SalesLoft1__Most_Recent_Cadence_Name__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.SalesLoft1__Most_Recent_Last_Completed_Step__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CreatedDate</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>CreatedDateForm</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.IsClosed</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Opportunity_Most_Recent_Cadence</targetReference>
+            </connector>
+            <label>Yes - Most Recent Cadence Update</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Opp_Source_Detail_is_blank</name>
+        <label>Opp Source Detail is blank</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Project_Location_Blank</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Opp_Source_Detail_is_blank</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Lead_Source_Detail__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Opportunity_Source_Detail__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Opp_Source_Detail</targetReference>
+            </connector>
+            <label>Yes - Opp Source Detail is blank</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Opp_Source_is_blank</name>
+        <label>Opp Source is blank</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Opp_Source_Detail_is_blank</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Opp_Source_is_blank</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.LeadSource</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Opportunity_Source__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Opp_Source</targetReference>
+            </connector>
+            <label>Yes - Opp Source is blank</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Project_Location_2</name>
+        <label>Project Location 2?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Decision_By_User_Role_Locked</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Project_Location_2_0</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Project_Location_2__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Project_Location_2__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Territory_2</targetReference>
+            </connector>
+            <label>Yes - Project Location 2</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Project_Location_Blank</name>
+        <label>Project Location Blank?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Project_Location_2</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Project_Location_Blank</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Project_Location__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Project_Location__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Territory</targetReference>
+            </connector>
+            <label>Yes - Project Location Blank</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>SDR Role Type (Updated for SDR changes)</description>
+        <name>dcn_SDR_Role_Locked</name>
+        <label>SDR  Role (Locked)</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Start_date_End_date_6_months</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_SDR_Role_Locked</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsChangedformula</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_SDR_Role_Locked</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Update Stage_Moved_from_Stage_0__c when Opportunity is created with Stage 1 OR updated to Stage 1 onwards</description>
+        <name>dcn_Stage_Moved_from_Stage_0</name>
+        <label>Stage Moved from Stage 0</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Push_Counter</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Moved_from_Stage_0</name>
+            <conditionLogic>((1 OR 2) AND (3 AND 4 AND 5 AND 6)) OR (7 AND 8)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>0 - Unqualified</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>0 - Pre Sales Qualified</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>0 - Unqualified</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>0 - Pre Sales Qualified</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed Lost</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Disqualified</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>1 - Discovery</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Stage_Moved_from_Stage_0</targetReference>
+            </connector>
+            <label>Moved from Stage 0</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Top_Strategic_Agency_Conglomerate</name>
+        <label>Top Strategic Agency Conglomerate?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Closed_Won_or_Closed_Lost</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Stamp_Opp3_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Partner_Account__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Partner_Account__r.Top_Strategic_Agency__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Conglomerate</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Stamp_Top_Strategic_Agency_Conglomerate</targetReference>
+            </connector>
+            <label>Yes - Stamp Opp Conglomerate</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dcn_Top_Strategic_Agency_Independent</name>
+        <label>Top Strategic Agency Independent?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Top_Strategic_Agency_Conglomerate</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No - Stamp Opp</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Stamp_Opp_Independent</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Partner_Account__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Partner_Account__r.Top_Strategic_Agency__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Independent</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Stamp_Top_Strategic_Agency_Independent</targetReference>
+            </connector>
+            <label>Yes - Stamp Opp Independent</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_By_User_Role_Locked_Closed_Won_Closed_Lost</name>
+        <label>Decision - By User Role (Locked) - Closed Won/Closed Lost</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Stage_Moved_from_Stage_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Closed_By_User_Role_Locked_Closed_Won_Closed_Lost</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed Won</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed Lost</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asgn_Closed_Locked_values_Closed_Won_Closed_Lost</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Closed By User Role (Locked) - Closed Won/Closed Lost</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Closed_Won_Upgrade_Opportunity_for_POC_Trial</name>
+        <label>Decision Closed Won Upgrade Opportunity for POC-Trial</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Primary_Contact_Available</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>update_POC_Trial_Opportunity_Sales_Type</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.StageName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed Won</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed Won</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Sales_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Upgrade</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subscription__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subscription__r.Sales_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>POC</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>getPOCSubscriptionRecord</targetReference>
+            </connector>
+            <label>update POC-Trial Opportunity Sales Type</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_To_Check_SDR_CDR_BDR_ADR</name>
+        <label>Decision To Check SSDR/SDR/CDR/BDR/ADR</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Assign_Top_Parent_Account</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Outcome</defaultConnectorLabel>
+        <rules>
+            <name>IF_Owner_s_Manager_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Owner.ManagerId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>isExecuted</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Opportunity_owner_manager</targetReference>
+            </connector>
+            <label>IF Owner&apos;s Manager Not Null</label>
+        </rules>
+        <rules>
+            <name>IF_SSDR_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>SSDRIsNotNull</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Update_DQ_Approver_with_SDR_s_Manager</targetReference>
+            </connector>
+            <label>IF SSDR Not Null</label>
+        </rules>
+        <rules>
+            <name>IF_SDR_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>SDRIsNotNull</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_DQ_Approver_with_SDR_s_Manager</targetReference>
+            </connector>
+            <label>IF SDR Not Null</label>
+        </rules>
+        <rules>
+            <name>IF_CDR_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CDRIsNotNull</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_DQ_Approver_with_CDR_s_Manager</targetReference>
+            </connector>
+            <label>IF CDR Not Null</label>
+        </rules>
+        <rules>
+            <name>IF_BDR_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>BDRIsNotNull</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_DQ_Approver_with_BDR_s_Manager</targetReference>
+            </connector>
+            <label>IF BDR Not Null</label>
+        </rules>
+        <rules>
+            <name>If_ADR_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ADRisNotNull</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_DQ_Approver_with_ADR_s_Manager</targetReference>
+            </connector>
+            <label>If ADR Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Update_Opp_Owner_Manager</name>
+        <label>Decision Update Opp Owner Manager</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Assign_Top_Parent_Account</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>updateManager</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Disqualified</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_To_Check_SDR_CDR_BDR_ADR</targetReference>
+            </connector>
+            <label>updateManager</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Validate_POC_Upgrade_Flow_Settings</name>
+        <label>Decision Validate POC Upgrade Flow Settings</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Primary_Contact_Available</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Validate_POC_Upgrade</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Setup.Flow_Environment_Settings__c.Validate_POC_Upgrade__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>POC_Upgrade_Requires_Active_Subscription_for_Closed_Won</targetReference>
+            </connector>
+            <label>Validate POC Upgrade</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Validate_POC_Upgrade_Opportunity</name>
+        <label>Decision Validate POC Upgrade Opportunity</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Validate_POC_Upgrade_Flow_Settings</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Throw POC Upgrade Closed Won Error</defaultConnectorLabel>
+        <rules>
+            <name>If_Active_Subscription_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getPOCSubscriptionRecord</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Sales_Record_Type</targetReference>
+            </connector>
+            <label>If Active Subscription Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Enable_MY_Contract</name>
+        <label>Enable MY Contract?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes01</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Setup.Flow_Environment_Settings__c.MultiYear_Contract_Enablement__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Term_Length_In_Months</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Created_User_s_Role_Exist</name>
+        <label>Is Created User&apos;s Role Exist?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Enable_MY_Contract</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>YesExistOnCreation</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$UserRole.Name</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Created_User_s_Role_On_Creation</targetReference>
+            </connector>
+            <label>Yes (On Creation)</label>
+        </rules>
+        <rules>
+            <name>Yes_On_Update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CreatedBy.UserRole.Name</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Created_User_s_Role_On_Updation</targetReference>
+            </connector>
+            <label>Yes (On Update)</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Stage_Closed_Won_Pending</name>
+        <label>Is Stage Closed Won Pending?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Current_Subscription</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Stage is not Closed Won Pending</defaultConnectorLabel>
+        <rules>
+            <name>Stage_is_Closed_Won_Pending</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed Won Pending</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Date_and_Time_of_Stage_change_to_Closed_Won_Pending</targetReference>
+            </connector>
+            <label>Stage is Closed Won Pending</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Primary_Contact_Available</name>
+        <label>Primary Contact Available?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Update_Record_Type_HubSpot</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yess</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Primary_Contact__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Primary_Contact_Email_Field</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Push_Counter</name>
+        <label>Push Counter</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_ISV_Accelerate</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>dcn_Increment_the_push_counter_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IncrementPushCounter</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Push_Count__c</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Push_counter_Null</targetReference>
+            </connector>
+            <label>Increment the push counter - Null</label>
+        </rules>
+        <rules>
+            <name>Increment_the_push_counter_Not_null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IncrementPushCounter</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Push_Count__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Push_counter_not_null</targetReference>
+            </connector>
+            <label>Increment the push counter - Not null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Record_Type_not_null</name>
+        <label>Record Type not null</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Check_On_Most_Impactful_Sales_Play</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_Record_Type_Available</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Opp_Record_Type.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Record_type1</targetReference>
+            </connector>
+            <label>If Record Type Available</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Standard_Fixed_Term_TOS_check</name>
+        <label>Standard Fixed Term &amp; TOS check</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Current_Subscription</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Standard Fixed Term &amp; TOS check pass</defaultConnectorLabel>
+        <rules>
+            <name>Standard_Fixed_Term_TOS_check_fail</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WPE_Term_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Standard Fixed Term</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.TOS_Accepted__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Setup.Flow_Environment_Settings__c.FTC_Check__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Blocked_move_to_Closed_Won_Pending</targetReference>
+            </connector>
+            <label>Standard Fixed Term &amp; TOS check fail</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Start_date_End_date_6_months</name>
+        <label>Start date -  End date &lt; 6 months?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Add_to_Lead_source_Detail</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes_6_months</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fr_LessThanSixMonths</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asn_Update_Short_Term_Flag</targetReference>
+            </connector>
+            <label>Yes - &lt; 6 months</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Update_Booking_Amount_Override_For_POC_Trial</name>
+        <label>Update Booking Amount Override For POC-Trial</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Closed_Won_Upgrade_Opportunity_for_POC_Trial</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Check_Sales_Type_is_POC_Trial</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Sales_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>POC-Trial</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Booking_Amount_Over__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Booking_Amount_Override</targetReference>
+            </connector>
+            <label>Check Sales Type is POC-Trial</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Update_Employee_Count</name>
+        <label>Update Employee Count</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Update_Project_Location_of_Opp1</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Update_Employee_Count1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Account.NumberOfEmployees</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Employee_Count2</targetReference>
+            </connector>
+            <label>Update Employee Count</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Update_Name</name>
+        <label>Update Name</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>dcn_Do_Forecast_Stage_Logic</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Set_Name</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Record_Type</targetReference>
+            </connector>
+            <label>Set Name</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Update_Owner_Role_Fields_on_Opp</name>
+        <label>Update Owner Role Fields on Opp</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Get_User_Manager_Role</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Update_Role_Fields_on_Opp</name>
+            <conditionLogic>(1 OR 2) AND 3 AND 4</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <conditions>
+                <leftValueReference>Copy_1_of_Get_User_Role.UserRole.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Copy_1_of_Get_User_Role.UserRole.Name</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Owner_Role_Backend_Fields</targetReference>
+            </connector>
+            <label>Update Owner Role Fields on Opp</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Update_Project_Location_of_Opp</name>
+        <label>Update Project Location of Opp</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Get_Account_Detail</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Update_Project_Location2</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.Project_Location_1__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Project_Location</targetReference>
+            </connector>
+            <label>Update Project Location 1</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Update_Project_Location_of_Opp1</name>
+        <label>Update Project Location 1 of Opp</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Update_Project_Location_of_Opp</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Update_Project_Location1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.Project_Location_2__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Project_Location_1</targetReference>
+            </connector>
+            <label>Update Project Location 1</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Update_Record_Type_HubSpot</name>
+        <label>Update Record Type - HubSpot</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Check_On_Most_Impactful_Sales_Play</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Update_Record_Type</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$User.Full_Name__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Hubspot Integration_User</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Record_Type_HubSpot__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Opp_Record_Type</targetReference>
+            </connector>
+            <label>Update Record Type</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>xDR_Points</name>
+        <label>xDR Points?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Is_Stage_Closed_Won_Pending</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Do_xDR_Points</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.SDR__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Opp_Create_2_Points</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <description>12MAY25 - COLIN - Stamping of Closed Owner Role on CW/CL instead of CWP
+22APR25 - ARA - Added SSDR to &apos;XDR Check&apos;
+26MAR25 - PAT - Updated the TermLength formula
+24MAR25 - COLIN - Removed Onboarding Status field update
+20Mar25 - Removed Agency Account Owner? element
+12Mar25-Faizan-Updated as part of ESS-1779
+11Mar25 - Updated the logic to pull PAM from the Account Owner of the Agency Account and populate their manager in the PAM Manager field
+03Mar25 - Added PAM Manager Assignment in Agency Account Owner Decision
+28Feb25 - Added Account Tier in the Agency Account Owner Decision Outcome
+24Feb25 - Updated Moved From Stage 0 Decision Outcome
+20Feb25 - Removed the Closed Won Booking Amount logic
+18Dec24 - Update RecordType for HubSpot
+12Dec24 - Added check on FTC Check
+01AUG24 - DN(ESS) - Added Stage Closed Won Pending Date Time stamp before datacenter validation
+14JUN24 - CC(ESS) - Modified FTC logic to be based on WPE Term Type being Standard Fixed Term
+12JUN24 - CC(ESS) - Update error wording for FTC
+10JUN24 - CC(ESS) - Modified FTC logic to be based on WPE Term Type being Fixed Term
+15MAY24 - DON(ESS) - Added custom error for FTC &amp; TOS
+10Apr24 - (CS) - Eliminate Stage test from CouponCodeExist test - and don&apos;t blank for non O.E.
+12May23 - SDA(CC) - update Start Date with Close Date at the end of the flow
+14Apr23 - PJ(CC) - Fixed Onboarding Note format
+21Feb23 - SA(CC) - Automatic Opp Name update
+16Feb23 - SA(CC) - store current related subscription MRR to the current MRR fields in the Opp
+Recent Changes: Add &quot;-----&quot; to Lead Source Detail
+30May23 - Added BAPI Auto Close decision</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>ADRisNotNull</name>
+        <dataType>Boolean</dataType>
+        <expression>AND ({!$Record.ADR__c} &lt;&gt; Null,
+{!$Record.ADR__r.ManagerId} &lt;&gt; Null)</expression>
+    </formulas>
+    <formulas>
+        <name>BDRIsNotNull</name>
+        <dataType>Boolean</dataType>
+        <expression>AND ({!$Record.BDR__c} &lt;&gt; Null,
+{!$Record.BDR__r.ManagerId} &lt;&gt; Null)</expression>
+    </formulas>
+    <formulas>
+        <name>calcOppName</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Account.Name}+&quot; - &quot;+{!Get_Record_Type.Name}+&quot; - &quot;+TEXT({!$Record.CloseDate})</expression>
+    </formulas>
+    <formulas>
+        <name>calcTerritory</name>
+        <dataType>String</dataType>
+        <expression>IF( {!varTerritory} = &apos;EU&apos;, {!varParentTerritory}, {!varTerritory})</expression>
+    </formulas>
+    <formulas>
+        <name>calculate_DateTimeTwentyDays</name>
+        <dataType>DateTime</dataType>
+        <expression>CASE(
+  MOD(DATEVALUE({!$Flow.InterviewStartTime}) - DATE(1900, 1, 7), 7),
+  0, ({!$Flow.InterviewStartTime} + {!Get_Record_of_Time_to_Stage_Change.Milestone_in_Day__c} + FLOOR(({!Get_Record_of_Time_to_Stage_Change.Milestone_in_Day__c} + 1) / 5) * 2), 
+  6, ({!$Flow.InterviewStartTime} + {!Get_Record_of_Time_to_Stage_Change.Milestone_in_Day__c} + FLOOR(({!Get_Record_of_Time_to_Stage_Change.Milestone_in_Day__c} + 2) / 5) * 2), 
+  ({!$Flow.InterviewStartTime} + {!Get_Record_of_Time_to_Stage_Change.Milestone_in_Day__c} + FLOOR({!Get_Record_of_Time_to_Stage_Change.Milestone_in_Day__c} / 5) * 2) 
+)</expression>
+    </formulas>
+    <formulas>
+        <name>calculate_DateTimeTwoDays</name>
+        <dataType>DateTime</dataType>
+        <expression>CASE(
+  MOD(DATEVALUE({!$Flow.InterviewStartTime}) - DATE(1900, 1, 7), 7),
+  0, ({!$Flow.InterviewStartTime} +{!Get_Record_of_First_Touch_SLA.Milestone_in_Day__c} + FLOOR(({!Get_Record_of_First_Touch_SLA.Milestone_in_Day__c} + 1) / 5) * 2), 
+  6, ({!$Flow.InterviewStartTime} + {!Get_Record_of_First_Touch_SLA.Milestone_in_Day__c} + FLOOR(({!Get_Record_of_First_Touch_SLA.Milestone_in_Day__c} + 2) / 5) * 2), 
+  ({!$Flow.InterviewStartTime} + {!Get_Record_of_First_Touch_SLA.Milestone_in_Day__c} + FLOOR({!Get_Record_of_First_Touch_SLA.Milestone_in_Day__c} / 5) * 2) 
+)</expression>
+    </formulas>
+    <formulas>
+        <name>CDRIsNotNull</name>
+        <dataType>Boolean</dataType>
+        <expression>AND ({!$Record.CDR__c} &lt;&gt; Null,
+{!$Record.CDR__r.ManagerId} &lt;&gt; Null)</expression>
+    </formulas>
+    <formulas>
+        <name>CloseDateformula</name>
+        <dataType>DateTime</dataType>
+        <expression>CASE(WEEKDAY(Today()+15),
+1,now()+16, /*Set Sunday to Monday */
+7,now()+17, /*Set Saturday to Monday */
+now()+15
+)</expression>
+    </formulas>
+    <formulas>
+        <name>CreatedDateForm</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW() - 30</expression>
+    </formulas>
+    <formulas>
+        <name>CSMatClosing</name>
+        <dataType>String</dataType>
+        <expression>IF(ISNULL( {!$Record.Account.Account_Manager_user__c}),NULL, {!$Record.Account.Account_Manager_user__r.FirstName} &amp; &quot; &quot; &amp;  {!$Record.Account.Account_Manager_user__r.LastName})</expression>
+    </formulas>
+    <formulas>
+        <name>ForecastStageLogic</name>
+        <dataType>String</dataType>
+        <expression>IF(isnew() &amp;&amp; Text({!$Record.StageName}) =&quot;0 - Pre Sales Qualified&quot;, &quot;Omitted&quot;,
+If( 
+And(
+Text({!$Record__Prior.StageName}) =&quot;0 - Pre Sales Qualified&quot;,
+Text({!$Record.Forecast_Stage__c}) &lt;&gt; &quot;Commit&quot;,
+Text({!$Record.Forecast_Stage__c}) &lt;&gt; &quot;Best Case&quot;),
+Case( Text({!$Record.StageName}),
+&quot;1 - Discovery&quot;,                      &quot;Pipeline&quot;,
+&quot;2 - Solution Fit&quot;,                   &quot;Pipeline&quot;,
+&quot;3 - Consideration&quot;,               &quot;Pipeline&quot;,
+&quot;4 - Negotiation&quot;,                   &quot;Pipeline&quot;,
+&quot;5 - Migration&quot;,                      &quot;Pipeline&quot;,
+&quot;Omitted&quot;),
+
+Case( Text({!$Record.StageName}),
+&quot;Closed Won&quot;,                      &quot;Closed&quot;,
+&quot;Closed Lost&quot;,                      &quot;Omitted&quot;,
+&quot;Disqualified&quot;,                      &quot;Omitted&quot;,
+
+&quot;Identified Risk&quot;,                  &quot;Pipeline&quot;,
+&quot;Evaluating Options&quot;,          &quot;Best Case&quot;,
+&quot;Transitioning&quot;,                    &quot;Commit&quot;,
+&quot;Dev Acct Proposal&quot;,          &quot;Best Case&quot;,
+&quot;Churned&quot;,                           &quot;Closed&quot;,
+&quot;Saved&quot;,                               &quot;Omitted&quot;,
+&quot;Downgraded&quot;,                    &quot;Closed&quot;,
+
+IF ( AND ( {!$Record__Prior.IsClosed} = TRUE, Text( {!$Record.Forecast_Stage__c} ) &lt;&gt; &quot;Closed&quot;), &quot;Omitted&quot;,
+IF ( AND( {!$Record.IsClosed} = False, Text( {!$Record.Forecast_Stage__c} ) = &quot;Closed&quot;), &quot;Omitted&quot;,
+IF ( Text({!$Record.StageName}) =&quot;Closed Won Pending&quot; , &quot;Commit&quot;,
+IF( Text( {!$Record.Forecast_Stage__c} ) &lt;&gt; &quot;&quot;,  Text( {!$Record.Forecast_Stage__c} ) ,
+&quot;Omitted&quot;))))
+)
+)
+)</expression>
+    </formulas>
+    <formulas>
+        <name>fr_LessThanSixMonths</name>
+        <dataType>Boolean</dataType>
+        <expression>IF(MONTH({!$Record.Celigo_AT_Start_Date__c}) - MONTH({!$Record.End_Date__c}) &lt;= 180, TRUE, FALSE)</expression>
+    </formulas>
+    <formulas>
+        <name>IncrementPushCounter</name>
+        <dataType>Boolean</dataType>
+        <expression>IF({!$Record.CloseDate} &gt; {!$Record__Prior.CloseDate}, 
+IF(MONTH({!$Record.CloseDate}) &lt;&gt; MONTH({!$Record__Prior.CloseDate}), True, False),False)</expression>
+    </formulas>
+    <formulas>
+        <name>IsChangedformula</name>
+        <dataType>Boolean</dataType>
+        <expression>IF({!$Record__Prior.Tech_Survey_Complete__c} != {!$Record.Tech_Survey_Complete__c},TRUE,FALSE)</expression>
+    </formulas>
+    <formulas>
+        <name>IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>IsNew()</expression>
+    </formulas>
+    <formulas>
+        <name>NewHighestStageNum</name>
+        <dataType>Number</dataType>
+        <expression>case( {!$Record.StageName},
+&quot;0 - Pre Sales Qualified&quot;,0,
+&quot;1 - Discovery&quot;,1,
+&quot;2 - Solution Fit&quot;,2,
+&quot;3 - Consideration&quot;,3,
+&quot;4 - Negotiation&quot;,4,
+&quot;5 - Migration&quot;,5,
+&quot;Qualification&quot;,1,
+&quot;Closed Won&quot;,0,
+&quot;Closed Lost&quot;,0,
+&quot;Disqualified&quot;,0,
+0)</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>OnboardingNoteCROSSSELLS</name>
+        <dataType>String</dataType>
+        <expression>&quot;Cross-Sell: &quot; &amp; BR() &amp; BR() &amp;
+&quot;1.) Is the primary customer contact an agency, or a client of an existing agency? &quot; &amp; BR() &amp; BR() &amp;
+&quot;1a.) What is the primary contact&apos;s email address? &quot; &amp; BR() &amp; BR() &amp;
+&quot;2.) Will this involve the migration of existing WPE sites between separate WPE accounts? &quot; &amp; BR() &amp; BR() &amp;
+&quot;2a.) Has authorization been provided? (Support Owner PIN) &quot; &amp; BR() &amp; BR() &amp;
+&quot;3.) What is the preferred datacenter location? &quot; &amp; BR() &amp; BR() &amp;
+&quot;4.) What is the expected level of customer engagement with Onboarding? &quot; &amp; BR() &amp; BR() &amp;
+&quot;5.) Do they have any specific technical requirements that were discussed with the SE? &quot; &amp; BR() &amp; BR() &amp;
+&quot;6.) DNS changes: Do they have all the relevant information to do this? Any special requirements? (i.e. Reverse Proxies, GES/Cloudflare adoption, etc...) &quot; &amp; BR()</expression>
+    </formulas>
+    <formulas>
+        <name>OnboardingNoteNEW</name>
+        <dataType>String</dataType>
+        <expression>&quot;Net New Deal:&quot; &amp; BR() &amp; BR() &amp;
+&quot;1.) Who is the primary contact? (email goes here)  &quot;&amp; BR() &amp; BR() &amp;
+&quot;2.) What is the preferred method of contact? &quot;&amp; BR() &amp; BR() &amp;
+&quot;3.) What is the preferred datacenter location? &quot;&amp; BR() &amp; BR() &amp;
+&quot;4.) Is the customer a high touch point customer? &quot;&amp; BR() &amp; BR() &amp;
+&quot;5.) What were their main pain points from their previous provider; what are we trying to solve? &quot;&amp; BR() &amp; BR() &amp;
+&quot;6.) What performance metrics are they looking for? &quot;&amp; BR() &amp; BR() &amp;
+&quot;7.) Do they have any really specific technical requirements that were discussed with the SE? &quot;&amp; BR() &amp; BR() &amp;
+&quot;8.) DNS Changes: Do they have all the relevant information to do this? Any Special Requirements? &quot;&amp; BR()</expression>
+    </formulas>
+    <formulas>
+        <name>OnboardingNoteUPGRADE</name>
+        <dataType>String</dataType>
+        <expression>&quot;Upgrades: &quot; &amp; BR() &amp; BR() &amp;
+&quot;1.) Who is the primary contact? (email goes here) &quot; &amp; BR() &amp; BR() &amp;
+&quot;2.) What is the preferred datacenter location? &quot; &amp; BR() &amp; BR() &amp;
+&quot;3.) What is the Account Owner’s Support PIN? &quot; &amp; BR() &amp; BR() &amp;
+&quot;4.) What is the preferred upgrade/migration time? &quot; &amp; BR() &amp; BR() &amp;
+&quot;5.) Is this a project (if so, for how long) &quot; &amp; BR() &amp; BR() &amp;
+&quot;6.) What performance metrics are they looking for? &quot; &amp; BR() &amp; BR() &amp;
+&quot;7.) Do they have any really specific technical requirements that were discussed with the SE? &quot; &amp; BR() &amp; BR() &amp;
+&quot;8.) DNS Changes: Do they have all the relevant information to do this? Any Special Requirements?  (Note - does not apply to in-place upgrades. No DNS updates required for in-place) &quot; &amp; BR()</expression>
+    </formulas>
+    <formulas>
+        <name>SDRIsNotNull</name>
+        <dataType>Boolean</dataType>
+        <expression>AND ({!$Record.SDR__c} &lt;&gt; Null,
+{!$Record.SDR__r.ManagerId} &lt;&gt; Null)</expression>
+    </formulas>
+    <formulas>
+        <name>SSDRIsNotNull</name>
+        <dataType>Boolean</dataType>
+        <expression>AND ({!$Record.SSDR__c} &lt;&gt; Null,
+{!$Record.SSDR__r.ManagerId} &lt;&gt; Null)</expression>
+    </formulas>
+    <formulas>
+        <name>TermLength</name>
+        <dataType>Number</dataType>
+        <expression>IF(TEXT({!$Record.WPE_Term_Type__c})&lt;&gt;&quot;Month-to-Month&quot;,
+IF(TEXT({!$Record.Contract_Term__c})= &quot;1 Year&quot;, 12, 
+IF(TEXT({!$Record.Contract_Term__c}) = &quot;2 Year&quot;, 24, 
+IF(TEXT({!$Record.Contract_Term__c}) = &quot;3 Year&quot;, 36,
+IF(TEXT({!$Record.Contract_Term__c}) = null,null,
+{!$Record.Term_Length_In_Months__c})))),1)</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Today</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()</expression>
+    </formulas>
+    <formulas>
+        <name>TopParentAccountOwner</name>
+        <dataType>String</dataType>
+        <expression>IF(NOT(ISBLANK({!$Record.Account.Parent.Parent.Parent.Parent.Parent.Id})), {!$Record.Account.Parent.Parent.Parent.Parent.Parent.Id},
+IF(NOT(ISBLANK({!$Record.Account.Parent.Parent.Parent.Parent.Id})), {!$Record.Account.Parent.Parent.Parent.Parent.Id},
+IF(NOT(ISBLANK({!$Record.Account.Parent.Parent.Parent.Id})), {!$Record.Account.Parent.Parent.Parent.Id},
+IF(NOT(ISBLANK({!$Record.Account.Parent.Parent.Id})), {!$Record.Account.Parent.Parent.Id},
+IF(NOT(ISBLANK({!$Record.Account.Parent.Id})),{!$Record.Account.Parent.Id},
+{!$Record.Account.Id})))))</expression>
+    </formulas>
+    <formulas>
+        <name>ZenDeskBillingIsPopulated</name>
+        <dataType>Boolean</dataType>
+        <expression>NOT( ISBLANK( {!$Record.Zendesk_Billing_Ticket__c} ))</expression>
+    </formulas>
+    <interviewLabel>Opportunity - Before Save {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Opportunity - Before Save</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Copy_1_of_Get_User_Role</name>
+        <label>Get User Role</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_Owner_Role_Fields_on_Opp</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Account_Detail</name>
+        <label>Get Account Detail</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_If_Opportunity_is_Self_Serve</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Opp_Record_Type</name>
+        <label>Get Opp Record Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Record_Type_not_null</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Opportunity</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Record_Type_HubSpot__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Record_of_First_Touch_SLA</name>
+        <label>Get Record of First Touch SLA</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_First_Touch_SLA_Field</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Opportunity_Time_to_First_Touch</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>SobjectType__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Opportunity</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>WPE_SLA_Milestone__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Record_of_Time_to_Stage_Change</name>
+        <label>Get Record of Time to Stage Change</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_Time_to_Stage_Change_Field</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Opportunity_Time_to_Stage_Change</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>SobjectType__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Opportunity</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>WPE_SLA_Milestone__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Record_Type</name>
+        <label>Get Record Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_Opp_Name</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Opportunity</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.RecordTypeId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Sales_Record_Type</name>
+        <label>Get Sales Record Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_Sales_Record_Type_for_POC_opp</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Opportunity</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>New_Sale</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Subscription_Records</name>
+        <label>Get Subscription Records</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_Employee_Count</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Account__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Active</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Subscription__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Territory</name>
+        <label>Get Territory</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_Var</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Project_Location__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Territory2</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Territory_2</name>
+        <label>Get Territory 2</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_Var_0</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Project_Location_2__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Territory2</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_User_Manager_Role</name>
+        <label>Get User Manager Role</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Copy_2_of_Update_Owner_Role_Fields_on_Opp</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Owner.Manager.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getPOCSubscriptionRecord</name>
+        <label>getPOCSubscriptionRecord</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_Validate_POC_Upgrade_Opportunity</targetReference>
+        </connector>
+        <filterLogic>1 AND 2 AND (3 OR 4)</filterLogic>
+        <filters>
+            <field>Account__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Active</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Opportunity__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Opportunity__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Subscription__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Opp_Accept_1_Pt</name>
+        <label>Opp Accept 1 Pt</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_Stage_Closed_Won_Pending</targetReference>
+        </connector>
+        <filterLogic>((1 and 2) or (3 and 5)) and 4</filterLogic>
+        <filters>
+            <field>Qualified_Plan__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Scale &amp; Above</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Proactive_Source__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Proactive_Source__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Generic Shared</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Stage_Moved_from_Stage_0__c</field>
+            <operator>GreaterThan</operator>
+            <value>
+                <dateValue>2020-01-31</dateValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Closed Won</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Opportunity_Accept_Points_2020__c</field>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Opp_Accept_2_Points</name>
+        <label>Opp Accept 2 Points</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Opp_Accept_1_Pt</targetReference>
+        </connector>
+        <filterLogic>1 and (2 or 3) and 4</filterLogic>
+        <filters>
+            <field>Qualified_Plan__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Scale &amp; Above</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Proactive_Source__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Proactive_Source__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Generic Scale &amp; Above</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Stage_Moved_from_Stage_0__c</field>
+            <operator>GreaterThan</operator>
+            <value>
+                <dateValue>2020-01-31</dateValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Opportunity_Accept_Points_2020__c</field>
+            <value>
+                <numberValue>2.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Opp_Create_1_Pt</name>
+        <label>Opp Create 1 Pt</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Opp_Accept_2_Points</targetReference>
+        </connector>
+        <filterLogic>(1 and 2) or (3 and 4)</filterLogic>
+        <filters>
+            <field>Qualified_Plan__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Scale &amp; Above</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Proactive_Source__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Proactive_Source__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Generic Shared</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Closed Won</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Opportunity_Create_Points_2020__c</field>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Opp_Create_2_Points</name>
+        <label>Opp Create 2 Points</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Opp_Create_1_Pt</targetReference>
+        </connector>
+        <filterLogic>1 and (2 or 3)</filterLogic>
+        <filters>
+            <field>Qualified_Plan__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Scale &amp; Above</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Proactive_Source__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Proactive_Source__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Generic Scale &amp; Above</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Opportunity_Create_Points_2020__c</field>
+            <value>
+                <numberValue>2.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Current_MRR</name>
+        <label>Update Current MRR</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_Created_User_s_Role_Exist</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Downgrade_New_MRR__c</field>
+            <value>
+                <elementReference>$Record.Subscription__r.MRR__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MRR_Prior_to_Upgrade__c</field>
+            <value>
+                <elementReference>$Record.Subscription__r.MRR__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>PreDowngrade_MRR__c</field>
+            <value>
+                <elementReference>$Record.Subscription__r.MRR__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Prior_MRR__c</field>
+            <value>
+                <elementReference>$Record.Subscription__r.MRR__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Employee_Count2</name>
+        <label>Update Employee Count</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Project_Location_of_Opp1</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Employee_Count__c</field>
+            <value>
+                <elementReference>$Record.Account.NumberOfEmployees</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_First_Touch_SLA_Field</name>
+        <label>Update First Touch SLA Field</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_Criteria_for_Activity</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Time_to_First_Touch_SLA__c</field>
+            <value>
+                <elementReference>calculate_DateTimeTwoDays</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Opp_Name</name>
+        <label>Update Opp Name</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>dcn_Do_Forecast_Stage_Logic</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>calcOppName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Opportunity</name>
+        <label>Update Opportunity</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>dcn_Project_Location_2</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Project_Geo_new__c</field>
+            <value>
+                <elementReference>calcTerritory</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Opportunity_0</name>
+        <label>Update Opportunity</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>dcn_Decision_By_User_Role_Locked</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Project_Geo_2_new__c</field>
+            <value>
+                <elementReference>calcTerritory</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Opportunity_Most_Recent_Cadence</name>
+        <label>Update Opportunity Most Recent Cadence</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>dcn_Metrics_Checkbox_Update</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SalesLoft1__Most_Recent_Cadence_Name__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>SalesLoft1__Most_Recent_Cadence_Name__c</field>
+            <value>
+                <elementReference>$Record.SalesLoft1__Primary_Contact__r.SalesLoft1__Most_Recent_Cadence_Name__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Primary_Contact_Email_Field</name>
+        <label>Update Primary Contact Email Field</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Record_Type_HubSpot</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Ticket_Requester_Email__c</field>
+            <value>
+                <elementReference>$Record.Primary_Contact__r.Email</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Project_Location</name>
+        <label>Update Project Location</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Account_Detail</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Project_Location__c</field>
+            <value>
+                <elementReference>$Record.Account.Project_Location_1__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Project_Location_1</name>
+        <label>Update Project Location 1</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Project_Location_of_Opp</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Project_Location_2__c</field>
+            <value>
+                <elementReference>$Record.Account.Project_Location_2__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Record_type1</name>
+        <label>Update Record type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_On_Most_Impactful_Sales_Play</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Get_Opp_Record_Type.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Sales_Record_Type_for_POC_opp</name>
+        <label>Update Sales &amp; Record Type for POC opp</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Primary_Contact_Available</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Get_Sales_Record_Type.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Sales_Type__c</field>
+            <value>
+                <stringValue>POC-Conversion</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Time_to_Stage_Change_Field</name>
+        <label>Update Time to Stage Change Field</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Subscription_Records</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Time_to_Stage_Change_SLA__c</field>
+            <value>
+                <elementReference>calculate_DateTimeTwentyDays</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Booking_Amount_Override_For_POC_Trial</targetReference>
+        </connector>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>tt_OnboardingNoteCROSSSELLS</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Cross-Sell:
+1.) Is the primary customer contact an agency, or a client of an existing agency?
+1a.) What is the primary contact&apos;s email address?
+2.) Will this involve the migration of existing WPE sites between separate WPE accounts?
+2a.) Has authorization been provided? (Support Owner PIN)
+3.) What is the preferred datacenter location?
+4.) What is the expected level of customer engagement with Onboarding?
+5.) Do they have any specific technical requirements that were discussed with the SE?
+6.) DNS changes: Do they have all the relevant information to do this? Any special requirements? (i.e. Reverse Proxies, GES/Cloudflare adoption, etc...)</text>
+    </textTemplates>
+    <textTemplates>
+        <name>tt_OnboardingNoteNEW</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Net New Deal:
+1.) Who is the primary contact? (email goes here)  
+2.) What is the preferred method of contact? 
+3.) What is the preferred datacenter location? 
+4.) Is the customer a high touch point customer? 
+5.) What were their main pain points from their previous provider; what are we trying to solve?
+6.) What performance metrics are they looking for? 
+7.) Do they have any really specific technical requirements that were discussed with the SE? 
+8.) DNS Changes: Do they have all the relevant information to do this? Any Special Requirements?</text>
+    </textTemplates>
+    <textTemplates>
+        <name>tt_OnboardingNoteUPGRADE</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Upgrades:
+1.) Who is the primary contact? (email goes here) 
+2.) What is the preferred datacenter location? 
+3.) What is the Account Owner’s Support PIN? 
+4.) What is the preferred upgrade/migration time?
+5.) Is this a project (if so, for how long) 
+6.) What performance metrics are they looking for? 
+7.) Do they have any really specific technical requirements that were discussed with the SE? 
+8.) DNS Changes: Do they have all the relevant information to do this? Any Special Requirements?  (Note - does not apply to in-place upgrades. No DNS updates required for in-place)</text>
+    </textTemplates>
+    <variables>
+        <name>currentItem_Filter_RT_Hosting_Customer</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>RecordType</objectType>
+    </variables>
+    <variables>
+        <name>currentItem_Filter_RT_Hosting_Customer_0</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>RecordType</objectType>
+    </variables>
+    <variables>
+        <name>currentItem_RT_collection_Filter_0</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>RecordType</objectType>
+    </variables>
+    <variables>
+        <description>To avoid recurssion</description>
+        <name>isExecuted</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>OpportunityRT</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varParentTerritory</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varTerritory</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

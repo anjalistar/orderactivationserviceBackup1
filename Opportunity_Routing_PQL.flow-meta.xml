@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Account_for_change_found</name>
+        <label>Account for change found?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Account_for_change_found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Account_for_Change</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Account_for_Change</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>BDR_Listed</name>
+        <label>BDR Listed?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Set_PQL_BDR_default_fields</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_BDR_Listed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Grab_BDR_ID</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_PQL_BDR_Fields</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>CDR_Listed</name>
+        <label>CDR Listed?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Set_PQL_CDR_Default_Fields</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>X1st_90_Days</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Grab_ACQ_ID</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_ACQ_as_Owner</targetReference>
+            </connector>
+            <label>1st 90 Days</label>
+        </rules>
+        <rules>
+            <name>Yes_CDR_Listed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Grab_CDR_ID</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_PQL_CDR_Fields</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>EMEA_CDR_Listed</name>
+        <label>EMEA CDR Listed?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Set_PQL_EMEA_CDR_default_fields</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_EMEA_CDR_Listed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Grab_EMEA_ID</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_PQL_EMEA_CDR_Fields</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>New_PQL_Opportunity</name>
+        <label>New PQL Opportunity?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>0 - Unqualified</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$User.Full_Name__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Data Migration User</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Grab_Account_Owner_Manager</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+        <rules>
+            <name>PQL_Story_of_Client_Update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.What_s_the_story_of_this_client__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$User.Full_Name__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Data Migration User</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Account_for_Change</targetReference>
+            </connector>
+            <label>PQL Story of Client Update</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Owner_Assignment_Path</name>
+        <label>Owner Assignment Path</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Set_PQL_General_Default_Fields</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Everything Else</defaultConnectorLabel>
+        <rules>
+            <name>NA_CDR</name>
+            <conditionLogic>1 AND (2 OR (3 AND 4))</conditionLogic>
+            <conditions>
+                <leftValueReference>PQLOwnerLogicNACDR</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.Owner.Assigned_Territory__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NA</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.Project_Geo_1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NA</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.Owner.Assigned_Territory__c</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Grab_CDR_ID</targetReference>
+            </connector>
+            <label>NA CDR</label>
+        </rules>
+        <rules>
+            <name>BDR</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>PQLOwnerLogicBDR</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Grab_BDR_ID</targetReference>
+            </connector>
+            <label>BDR</label>
+        </rules>
+        <rules>
+            <name>EMEA_CDR</name>
+            <conditionLogic>1 AND (2 OR (3 AND 4))</conditionLogic>
+            <conditions>
+                <leftValueReference>PQLOwnerLogicEMEA</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.Owner.Assigned_Territory__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>EMEA</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.Project_Geo_1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>EMEA</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.Owner.Assigned_Territory__c</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Grab_EMEA_ID</targetReference>
+            </connector>
+            <label>EMEA CDR</label>
+        </rules>
+    </decisions>
+    <description>ESS-2008: Update NA Rep Pairings - May 2025</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>DaysAgo14</name>
+        <dataType>Date</dataType>
+        <expression>Today()-14</expression>
+    </formulas>
+    <formulas>
+        <name>DaysAgo21</name>
+        <dataType>Date</dataType>
+        <expression>Today()-21</expression>
+    </formulas>
+    <formulas>
+        <name>IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <formulas>
+        <name>Parent_Top_Type</name>
+        <dataType>String</dataType>
+        <expression>IF( ISBLANK({!$Record.Account.ParentId}) , Text({!$Record.Account.Type}),
+
+IF( ISBLANK( {!$Record.Account.Parent.ParentId} ) , Text({!$Record.Account.Parent.Type}) ,
+
+IF( ISBLANK( {!$Record.Account.Parent.Parent.Parent.Id} ) , Text({!$Record.Account.Parent.Parent.Type}),
+
+IF( ISBLANK( {!$Record.Account.Parent.Parent.Parent.Parent.Id} ) , Text({!$Record.Account.Parent.Parent.Parent.Type}),
+
+IF( ISBLANK( {!$Record.Account.Parent.Parent.Parent.Parent.Parent.Id} ) , Text({!$Record.Account.Parent.Parent.Parent.Parent.Type}),
+
+Text({!$Record.Account.Parent.Parent.Parent.Parent.Parent.Type})
+)))))</expression>
+    </formulas>
+    <formulas>
+        <name>PQLhelperBDR</name>
+        <dataType>String</dataType>
+        <expression>IF(
+And(
+Text({!$Record.Account.Customer_Type__c}) = &quot;Customer&quot;,
+Not(CONTAINS(Text({!$Record.Account.Plan_picklist__c}), &quot;comped&quot;))
+),
+CASE( {!$Record.Account.Account_Owner_Alias__c} ,
+&quot;kbark&quot;,&quot;Brandon Ginsburg&quot;,
+&quot;jclem&quot;,&quot;Brandon Ginsburg&quot;,
+&quot;rmisite&quot;,&quot;Brandon Ginsburg&quot;,
+&quot;jwahl&quot;,&quot;Dylan Townley&quot;,
+&quot;rbrow&quot;,&quot;Dylan Townley&quot;,
+&quot;jpeab&quot;,&quot;Mikey Gomez&quot;,
+&quot;cjens&quot;,&quot;Mikey Gomez&quot;,
+&quot;Not Assigned&quot;),
+&quot;Not Assigned&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>PQLhelperEMEA</name>
+        <dataType>String</dataType>
+        <expression>IF(
+And(
+Text({!$Record.Account.Customer_Type__c}) = &quot;Customer&quot;,
+Not(CONTAINS(Text({!$Record.Account.Plan_picklist__c}), &quot;comped&quot;))
+),
+CASE( {!$Record.Account.Account_Owner_Alias__c} ,
+&quot;cryan&quot;,&quot;Max Watson&quot;,
+&quot;lnoot&quot;,&quot;Max Watson&quot;,
+&quot;dbeck&quot;,&quot;Max Watson&quot;,
+&quot;malte&quot;,&quot;Max Watson&quot;,
+&quot;hshak&quot;,&quot;Sarah El-Ayoubi&quot;,
+&quot;abawa&quot;,&quot;Sarah El-Ayoubi&quot;,
+&quot;eegba&quot;,&quot;Sarah El-Ayoubi&quot;,
+&quot;calbo&quot;,&quot;Tyla Dockeray&quot;,
+&quot;lbeac&quot;,&quot;Tyla Dockeray&quot;,
+&quot;jigho&quot;,&quot;Martha Penniall&quot;,
+&quot;SDawj&quot;,&quot;Martha Penniall&quot;,
+&quot;tgrah&quot;,&quot;Martha Penniall&quot;,
+&quot;Not Assigned&quot;),
+&quot;Not Assigned&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>PQLhelperNA</name>
+        <dataType>String</dataType>
+        <expression>/*SMB Round-Robin BAMs */
+IF(
+And(
+Text({!$Record.Account.Customer_Type__c}) = &quot;Customer&quot;,
+Not(CONTAINS(Text({!$Record.Account.Plan_picklist__c}), &quot;comped&quot;)),
+OR(
+    {!$Record.Account.Account_Owner_Alias__c} = &quot;EMill&quot;,
+    {!$Record.Account.Account_Owner_Alias__c} = &quot;ccutl&quot;,
+    {!$Record.Account.Account_Owner_Alias__c} = &quot;SMay&quot;
+)),
+
+/* &quot;SMB CDR round robin&quot; */
+
+Case( MOD( VALUE( {!$Record.Account.Account_Auto_Number__c}) ,7 )+1,
+1,&quot;Charles Rivers&quot;,
+2,&quot;Landon Jewell&quot;,
+3,&quot;Adan Torres Magana&quot;,
+4,&quot;Jackson Tarrant&quot;,
+5,&quot;Everett Webre&quot;,
+6,&quot;Rey Hinojosa&quot;,
+7,&quot;James Underwood&quot;,
+&quot;Not Assigned&quot;),
+
+/*MM Round-Robin BAMs */
+IF(
+    And(
+    Text({!$Record.Account.Customer_Type__c}) = &quot;Customer&quot;,
+    Not(CONTAINS(Text({!$Record.Account.Plan_picklist__c}), &quot;comped&quot;)),
+    {!$Record.Account.Account_Owner_Alias__c} = &quot;lhabi&quot;
+    ),
+    
+    /* &quot;SMB CDR round robin&quot; */
+    
+    Case( MOD( VALUE( {!$Record.Account.Account_Auto_Number__c}) ,3 )+1,
+    1,&quot;Alyssa Villarreal&quot;,
+2,&quot;Valerie Pruett&quot;,
+3,&quot;Aden Peoples&quot;,
+    &quot;Not Assigned&quot;),
+
+/*Non-Round-Robin BAMs */
+
+IF(
+And(
+Text({!$Record.Account.Customer_Type__c}) = &quot;Customer&quot;,
+Not(CONTAINS(Text({!$Record.Account.Plan_picklist__c}), &quot;comped&quot;))),
+CASE( {!$Record.Account.Account_Owner_Alias__c} ,
+&quot;mwall&quot;,&quot;Adan Torres Magana&quot;,
+&quot;hginn&quot;,&quot;Adan Torres Magana&quot;,
+&quot;mfrit&quot;,&quot;Aden Peoples&quot;,
+&quot;cchri&quot;,&quot;Aden Peoples&quot;,
+&quot;aswai&quot;,&quot;Alyssa Villarreal&quot;,
+&quot;bjaco&quot;,&quot;Alyssa Villarreal&quot;,
+&quot;mpark&quot;,&quot;Charles Rivers&quot;,
+&quot;wgall&quot;,&quot;Charles Rivers&quot;,
+&quot;erams&quot;,&quot;Everett Webre&quot;,
+&quot;jkuhn&quot;,&quot;Everett Webre&quot;,
+&quot;amora&quot;,&quot;Jackson Tarrant&quot;,
+&quot;asoto&quot;,&quot;Jackson Tarrant&quot;,
+&quot;jbarr&quot;,&quot;James Underwood&quot;,
+&quot;ljohn&quot;,&quot;Landon Jewell&quot;,
+&quot;ngrag&quot;,&quot;Landon Jewell&quot;,
+&quot;syem&quot;,&quot;Rey Hinojosa&quot;,
+&quot;midri&quot;,&quot;Rey Hinojosa&quot;,
+&quot;gmess&quot;,&quot;Valerie Pruett&quot;,
+&quot;ksmit&quot;,&quot;Valerie Pruett&quot;,
+&quot;MNakib&quot;,&quot;Valerie Pruett&quot;,
+&quot;Not Assigned&quot;),
+&quot;Not Assigned&quot;)))</expression>
+    </formulas>
+    <formulas>
+        <name>PQLOwnerLogicBDR</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+ISNULL( {!Grab_Account_Owner_Manager.Account_Owner_Manager__c} ) = False,
+{!Grab_Account_Owner_Manager.Account_Owner_Manager__c} = &quot;Daniel Moreno&quot;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>PQLOwnerLogicEMEA</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+OR(
+CONTAINS( Lower( TEXT( {!$Record.Account.Plan_picklist__c} ) ), &quot;startup&quot;),
+CONTAINS( Lower( TEXT( {!$Record.Account.Plan_picklist__c} ) ), &quot;growth&quot;),
+CONTAINS( Lower(TEXT( {!$Record.Account.Plan_picklist__c} ) ), &quot;professional&quot;),
+AND(
+{!$Record.Subscription__r.Status__c} = &quot;Active&quot;,
+{!$Record.Subscription__r.Dedicated_Plan__c} &gt; 0
+)
+)
+)</expression>
+    </formulas>
+    <formulas>
+        <name>PQLOwnerLogicNACDR</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+{!Parent_Top_Type} &lt;&gt; &quot;Agency&quot; ,
+{!Parent_Top_Type} &lt;&gt; &quot;Affiliate&quot; ,
+{!Parent_Top_Type} &lt;&gt; &quot;Partner&quot; ,
+OR(
+CONTAINS( Lower( TEXT( {!$Record.Account.Plan_picklist__c} ) ), &quot;startup&quot;),
+CONTAINS( Lower( TEXT( {!$Record.Account.Plan_picklist__c} ) ), &quot;growth&quot;),
+CONTAINS( Lower(TEXT( {!$Record.Account.Plan_picklist__c} ) ), &quot;professional&quot;),
+AND(
+{!$Record.Subscription__r.Status__c} = &quot;Active&quot;,
+{!$Record.Subscription__r.Dedicated_Plan__c} &gt; 0
+)
+)
+)</expression>
+    </formulas>
+    <formulas>
+        <name>PQLOwnerLogicNACDR_1st90acq</name>
+        <dataType>String</dataType>
+        <expression>IF( Today()-90 &lt; datevalue( {!$Record.Account.Sign_Up_Date__c} ),
+Case( MOD( VALUE( {!$Record.PQL_Auto_Number__c} ) ,2 )+1,
+1, &quot;Christopher Morris&quot;, /*005RM000005tqr7- O2 prod*/
+2, &quot;Christopher Morris&quot;, /*005RM000005tqr7 - O2 prod*/
+&quot;Check your &apos;NA1st90acq&apos; formula in flow&quot;), &quot;No&quot;)</expression>
+    </formulas>
+    <interviewLabel>Opportunity Routing: PQL {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Opportunity Routing: PQL</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Account_for_Change</name>
+        <label>Get Account for Change</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Account_for_change_found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Grab_Account_Owner_Manager</name>
+        <label>Grab Account Owner Manager</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Owner_Assignment_Path</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Account_Owner_Manager__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Account_Owner_Manager__c</queriedFields>
+        <queriedFields>OwnerId</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Grab_ACQ_ID</name>
+        <label>Grab ACQ ID</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>CDR_Listed</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Full_Name__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>PQLOwnerLogicNACDR_1st90acq</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Grab_BDR_ID</name>
+        <label>Grab BDR ID</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>BDR_Listed</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Full_Name__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>PQLhelperBDR</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Grab_CDR_ID</name>
+        <label>Grab CDR ID</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Grab_ACQ_ID</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Full_Name__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>PQLhelperNA</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Grab_EMEA_ID</name>
+        <label>Grab EMEA ID</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>EMEA_CDR_Listed</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Full_Name__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>PQLhelperEMEA</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Set_ACQ_as_Owner</name>
+        <label>Set ACQ as Owner</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>Grab_ACQ_ID.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>What_s_the_story_of_this_client__c</field>
+            <value>
+                <elementReference>$Record.Account.What_client_is_or_does__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Set_PQL_BDR_default_fields</name>
+        <label>Set PQL BDR default fields</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$Record.Account.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>What_s_the_story_of_this_client__c</field>
+            <value>
+                <elementReference>$Record.Account.What_client_is_or_does__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Set_PQL_BDR_Fields</name>
+        <label>Set PQL BDR Fields</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>Grab_BDR_ID.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>What_s_the_story_of_this_client__c</field>
+            <value>
+                <elementReference>$Record.Account.What_client_is_or_does__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Set_PQL_CDR_Default_Fields</name>
+        <label>Set PQL CDR Default Fields</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$Record.Account.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>What_s_the_story_of_this_client__c</field>
+            <value>
+                <elementReference>$Record.Account.What_client_is_or_does__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Set_PQL_CDR_Fields</name>
+        <label>Set PQL CDR Fields</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>Grab_CDR_ID.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>What_s_the_story_of_this_client__c</field>
+            <value>
+                <elementReference>$Record.Account.What_client_is_or_does__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Set_PQL_EMEA_CDR_default_fields</name>
+        <label>Set PQL EMEA CDR default fields</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$Record.Account.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>What_s_the_story_of_this_client__c</field>
+            <value>
+                <elementReference>$Record.Account.What_client_is_or_does__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Set_PQL_EMEA_CDR_Fields</name>
+        <label>Set PQL EMEA CDR Fields</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>Grab_EMEA_ID.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>What_s_the_story_of_this_client__c</field>
+            <value>
+                <elementReference>$Record.Account.What_client_is_or_does__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Set_PQL_General_Default_Fields</name>
+        <label>Set PQL General Default Fields</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$Record.Account.OwnerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>What_s_the_story_of_this_client__c</field>
+            <value>
+                <elementReference>$Record.Account.What_client_is_or_does__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Account_for_Change</name>
+        <label>Update Account for Change</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Account_for_Change.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>What_client_is_or_does__c</field>
+            <value>
+                <elementReference>$Record.What_s_the_story_of_this_client__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>New_PQL_Opportunity</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Opportunity_Source__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>CQO</stringValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

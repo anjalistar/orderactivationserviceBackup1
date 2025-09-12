@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <environments>Default</environments>
+    <interviewLabel>Opportunity Team Member - Member Deleted {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Opportunity Team Member - Member Deleted</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Team_Member_Delete_Platform_Event</name>
+        <label>Create Team Member Delete Platform Event</label>
+        <locationX>176</locationX>
+        <locationY>311</locationY>
+        <inputAssignments>
+            <field>Object_Id__c</field>
+            <value>
+                <elementReference>$Record.OpportunityId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Role__c</field>
+            <value>
+                <elementReference>$Record.TeamMemberRole</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserId__c</field>
+            <value>
+                <elementReference>$Record.UserId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Team_Member_Deleted__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Create_Team_Member_Delete_Platform_Event</targetReference>
+        </connector>
+        <object>OpportunityTeamMember</object>
+        <recordTriggerType>Delete</recordTriggerType>
+        <triggerType>RecordBeforeDelete</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

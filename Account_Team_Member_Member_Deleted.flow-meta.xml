@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <environments>Default</environments>
+    <interviewLabel>Account Team Member - Member Deleted {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Account Team Member - Member Deleted</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Acct_Team_Member_Dele_PE</name>
+        <label>Create Acct Team Member Dele PE</label>
+        <locationX>776</locationX>
+        <locationY>312</locationY>
+        <inputAssignments>
+            <field>Object_Id__c</field>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Role__c</field>
+            <value>
+                <elementReference>$Record.TeamMemberRole</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserId__c</field>
+            <value>
+                <elementReference>$Record.UserId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Team_Member_Deleted__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <start>
+        <locationX>650</locationX>
+        <locationY>48</locationY>
+        <connector>
+            <targetReference>Create_Acct_Team_Member_Dele_PE</targetReference>
+        </connector>
+        <object>AccountTeamMember</object>
+        <recordTriggerType>Delete</recordTriggerType>
+        <triggerType>RecordBeforeDelete</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
