@@ -1,0 +1,64 @@
+/**
+* @description  This queable class is created to run WPE_OrderSyncService class in queue
+* @author       KPMG
+* @test class   WPE_OrderSyncQueueable_Test
+* @date         Aug 1, 2025
+*/
+public class WPE_OrderSyncQueueable implements Queueable, Database.AllowsCallouts {
+    private List<Id> orderIds;
+    
+    public WPE_OrderSyncQueueable(List<Id> orderIds) {
+        this.orderIds = orderIds;
+    }
+    public void execute(QueueableContext context) {
+        List<Order> ordersToUpdate = new List<Order>();
+        List<WPE_Integration_Logger__c> loggersToInsert = new List<WPE_Integration_Logger__c>();
+        
+        List<Order> ordersToSync = [
+            SELECT Id, Name,WPE_Integration_Message__c,WPE_Integration_Status__c,Billing_Frequency__c, Status, Description, Type,Celigo_AT_Start_Date__c, Onboarding_Type__c,Order_Cancelled_by_Salesforce__c,
+            OrderNumber, CurrencyIsoCode, CreatedDate,celigo_sfnsio__Skip_Export_To_NetSuite__c,Start_Date__c, ActivatedDate, 
+            OpportunityId,Opportunity.Sales_Sub_Type__c,Opportunity.Sales_Type__c, OrderReferenceNumber, StatusCode,celigo_sfnsio__NetSuite_Id__c, celigo_sfnsio__NetSuite_Order_Number__c,
+            Provisioning_Meta_Blob__c,Transaction_UUID__c,Transaction_UUID_NS__c,celigo_sfnsio__NetSuite_Order_Status__c, celigo_sfnsio__NetSuite_Record__c,
+            Account.Company__c,Account.External_Id__c,Account.Name,Account.Phone,Account.Description,Account.Parent_Company__c,
+            Account.Payment_Term__c,Account.Celigo_Audit__c,Account.Celigo_AT_NetSuite_ID__c,Account.CurrencyIsoCode,Account.VAT_Reg_Number__c,
+            Account.ShippingCountry,Account.ShippingAddress,Account.ShippingStreet,Account.ShippingCity,Account.ShippingState,
+            Account.ShippingPostalCode,Account.Currency_code__c,Account.NetSuite_CustomerID__c,Account.BillingAddress,Account.BillingStreet,
+            Account.BillingCountry,Account.BillingCity, Account.BillingState, Account.BillingPostalCode,
+            Account.Customer_Entity_QSID__c,Account.TOS_Accepted_Date__c,Account.Website,Account.WPE_Term_Type_NS_Id__c,Account.WPE_Term_Type_ToS_URL__c,
+            NetSuite_Billing_Account__c, NetSuite_Billing_Account__r.billing_schedule__r.Recurrence_Frequency__c,
+            NetSuite_Billing_Account__r.Name,NetSuite_Billing_Account__r.CurrencyIsoCode,NetSuite_Billing_Account__r.Start_Date__c,
+            NetSuite_Billing_Account__r.Frequency__c,EffectiveDate,Opportunity.WPE_Term_Type__c,
+            Opportunity.Celigo_AT_NetSuite_Subscription_ID__c,Opportunity.WPE_Contract_Term_URL__c,Opportunity.Org_Sync_Org_1_Owner_Email__c,Opportunity.Agency_Tracking_ID__c,
+            contractId,Contact__r.Name,Contact__r.Department,Contact__r.Project_Location_1__c,Contact__r.Email,
+            Contract.ContractTerm,contract.WPE_Contract_Term__c,Contract.Contract_Type__c,Contract.WPE_Auto_Renewal__c,
+            Contract.WPE_Bill_To__c,Contract.StartDate,Contract.EndDate,Contract.Link_to_Contract__c,
+            (select id,product2.name,product2.productcode,quantity,unitprice from OrderItems)
+            FROM Order
+            WHERE Id IN :orderIds Limit 50000
+        ];
+        if(!ordersToSync.isempty() && ordersToSync!=null){
+            for (Order order : ordersToSync) {
+                
+                try {
+                    WPE_OrderSyncService.SyncResult result = WPE_OrderSyncService.sendOrderToMule(order);
+                    
+                    if (result.updatedOrder != null) {
+                        ordersToUpdate.add(result.updatedOrder);
+                    }
+                    if (result.logger != null) {
+                        loggersToInsert.add(result.logger);
+                    }
+                } catch (Exception e) { 
+                    System.debug('Order sync failed for ' + order.Id + ': ' + e.getMessage());
+                }
+            }
+        }
+        // DML outside loop for Integration Logger and Order Integration Message fields update
+        if (!loggersToInsert.isEmpty() && loggersToInsert!=null) {
+            insert loggersToInsert;
+        }
+        if (!ordersToUpdate.isEmpty() && ordersToUpdate!=null){  
+            update ordersToUpdate;
+        }
+    }
+}
